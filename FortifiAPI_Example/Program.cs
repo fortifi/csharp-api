@@ -13,6 +13,9 @@ namespace FortifiAPI_Example
                 try
                 {
                     var fortifiClient = new Client("ORG:FORT:1739:nowuu", "U0lyZ3pyb2E2-CSA-T0RyUUNMQVZL", "TzRFbFNEYlFBOG5lbFNpb1pxSkp4QTRIR1JFc1dS");
+                    
+                    // Set client base URL to work with API on local machine
+                    //fortifiClient.SetBaseURL("http://fortel.fortifi.me:9090/v1");
 
                     var response = await fortifiClient.GetBrandsAsync();
 

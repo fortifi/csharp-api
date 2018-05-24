@@ -36,6 +36,11 @@ namespace FortifiAPI
                 return settings;
             });
         }
+        
+        public void SetBaseURL(string URL)
+        {
+            _baseUrl = URL;
+        }
 
         private void GetNewToken()
         {
