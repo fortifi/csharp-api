@@ -3466,6 +3466,317 @@ namespace FortifiAPI
             }
         }
     
+        /// <summary>Retrieve chat sessions for customer</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="limit">Maximum number of records per page (default: 20)</param>
+        /// <param name="page">Page number (default: 1)</param>
+        /// <returns>Chat sessions</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response19> ChatSessionsAsync(string customerFid, int? limit, int? page)
+        {
+            return ChatSessionsAsync(customerFid, limit, page, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Retrieve chat sessions for customer</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="limit">Maximum number of records per page (default: 20)</param>
+        /// <param name="page">Page number (default: 1)</param>
+        /// <returns>Chat sessions</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response19> ChatSessionsAsync(string customerFid, int? limit, int? page, System.Threading.CancellationToken cancellationToken)
+        {
+            if (customerFid == null)
+                throw new System.ArgumentNullException("customerFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/customers/{customerFid}/chatSessions?");
+            urlBuilder_.Replace("{customerFid}", System.Uri.EscapeDataString(ConvertToString(customerFid, System.Globalization.CultureInfo.InvariantCulture)));
+            if (limit != null) urlBuilder_.Append("limit=").Append(System.Uri.EscapeDataString(ConvertToString(limit, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            if (page != null) urlBuilder_.Append("page=").Append(System.Uri.EscapeDataString(ConvertToString(page, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response19); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response19>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Customer not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response19);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Retrieve a payment</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="paymentFid">Payment FID to use</param>
+        /// <returns>Loaded Payment</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response20> PaymentsAsync(string customerFid, string paymentFid)
+        {
+            return PaymentsAsync(customerFid, paymentFid, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Retrieve a payment</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="paymentFid">Payment FID to use</param>
+        /// <returns>Loaded Payment</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response20> PaymentsAsync(string customerFid, string paymentFid, System.Threading.CancellationToken cancellationToken)
+        {
+            if (customerFid == null)
+                throw new System.ArgumentNullException("customerFid");
+    
+            if (paymentFid == null)
+                throw new System.ArgumentNullException("paymentFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/customers/{customerFid}/payments/{paymentFid}");
+            urlBuilder_.Replace("{customerFid}", System.Uri.EscapeDataString(ConvertToString(customerFid, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{paymentFid}", System.Uri.EscapeDataString(ConvertToString(paymentFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response20); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response20>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Customer or payment not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response20);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Link visitor to customer record</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="visitorId">Visitors Id</param>
+        /// <returns>Visitor ID linked to customer</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task LinkVisitorAsync(string customerFid, string visitorId)
+        {
+            return LinkVisitorAsync(customerFid, visitorId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Link visitor to customer record</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="visitorId">Visitors Id</param>
+        /// <returns>Visitor ID linked to customer</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task LinkVisitorAsync(string customerFid, string visitorId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (customerFid == null)
+                throw new System.ArgumentNullException("customerFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/customers/{customerFid}/linkVisitor");
+            urlBuilder_.Replace("{customerFid}", System.Uri.EscapeDataString(ConvertToString(customerFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var boundary_ = System.Guid.NewGuid().ToString();
+                    var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
+                    content_.Headers.Remove("Content-Type");
+                    content_.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary_);
+                    if (visitorId == null)
+                        throw new System.ArgumentNullException("visitorId");
+                    else
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(visitorId, System.Globalization.CultureInfo.InvariantCulture)), "visitorId");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Customer or visitor not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
         /// <summary>Initiate a chargeback on a payment</summary>
         /// <param name="customerFid">Customer FID to use</param>
         /// <param name="paymentFid">Payment FID to use</param>
@@ -3481,7 +3792,7 @@ namespace FortifiAPI
         /// <param name="feeAmount">Fee Amount</param>
         /// <returns>Chargeback Opened</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response19> Chargeback2Async(string customerFid, string paymentFid, System.DateTime dateSubmitted, string reasonCode, string caseNumber, double amount, State state, Source source, bool refunded, string description, string feeCurrency, double? feeAmount)
+        public System.Threading.Tasks.Task<Response21> Chargeback2Async(string customerFid, string paymentFid, System.DateTime dateSubmitted, string reasonCode, string caseNumber, double amount, State state, Source source, bool refunded, string description, string feeCurrency, double? feeAmount)
         {
             return Chargeback2Async(customerFid, paymentFid, dateSubmitted, reasonCode, caseNumber, amount, state, source, refunded, description, feeCurrency, feeAmount, System.Threading.CancellationToken.None);
         }
@@ -3502,7 +3813,7 @@ namespace FortifiAPI
         /// <returns>Chargeback Opened</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response19> Chargeback2Async(string customerFid, string paymentFid, System.DateTime dateSubmitted, string reasonCode, string caseNumber, double amount, State state, Source source, bool refunded, string description, string feeCurrency, double? feeAmount, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response21> Chargeback2Async(string customerFid, string paymentFid, System.DateTime dateSubmitted, string reasonCode, string caseNumber, double amount, State state, Source source, bool refunded, string description, string feeCurrency, double? feeAmount, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -3583,10 +3894,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response19); 
+                            var result_ = default(Response21); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response19>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response21>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -3621,7 +3932,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response19);
+                        return default(Response21);
                     }
                     finally
                     {
@@ -3647,7 +3958,7 @@ namespace FortifiAPI
         /// <param name="description">Notes</param>
         /// <returns>Chargeback Actioned</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response20> ChargebacksAsync(string customerFid, string chargebackFid, string reasonCode, string caseNumber, State2 state, bool refunded, string description)
+        public System.Threading.Tasks.Task<Response22> ChargebacksAsync(string customerFid, string chargebackFid, string reasonCode, string caseNumber, State2 state, bool refunded, string description)
         {
             return ChargebacksAsync(customerFid, chargebackFid, reasonCode, caseNumber, state, refunded, description, System.Threading.CancellationToken.None);
         }
@@ -3663,7 +3974,7 @@ namespace FortifiAPI
         /// <returns>Chargeback Actioned</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response20> ChargebacksAsync(string customerFid, string chargebackFid, string reasonCode, string caseNumber, State2 state, bool refunded, string description, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response22> ChargebacksAsync(string customerFid, string chargebackFid, string reasonCode, string caseNumber, State2 state, bool refunded, string description, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -3728,10 +4039,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response20); 
+                            var result_ = default(Response22); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response20>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response22>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -3760,7 +4071,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response20);
+                        return default(Response22);
                     }
                     finally
                     {
@@ -3900,7 +4211,7 @@ namespace FortifiAPI
         /// <param name="customerFid">Customer FID to use</param>
         /// <returns>Ticket collection</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response21> Tickets2Async(string customerFid)
+        public System.Threading.Tasks.Task<Response23> Tickets2Async(string customerFid)
         {
             return Tickets2Async(customerFid, System.Threading.CancellationToken.None);
         }
@@ -3910,7 +4221,7 @@ namespace FortifiAPI
         /// <returns>Ticket collection</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response21> Tickets2Async(string customerFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response23> Tickets2Async(string customerFid, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -3948,10 +4259,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response21); 
+                            var result_ = default(Response23); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response21>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response23>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -3974,7 +4285,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response21);
+                        return default(Response23);
                     }
                     finally
                     {
@@ -4089,7 +4400,7 @@ namespace FortifiAPI
         /// <param name="sectionName">Section Name</param>
         /// <returns>List Of Config Items</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response22> Config2Async(string entityFid, string sectionName)
+        public System.Threading.Tasks.Task<Response24> Config2Async(string entityFid, string sectionName)
         {
             return Config2Async(entityFid, sectionName, System.Threading.CancellationToken.None);
         }
@@ -4100,7 +4411,7 @@ namespace FortifiAPI
         /// <returns>List Of Config Items</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response22> Config2Async(string entityFid, string sectionName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response24> Config2Async(string entityFid, string sectionName, System.Threading.CancellationToken cancellationToken)
         {
             if (entityFid == null)
                 throw new System.ArgumentNullException("entityFid");
@@ -4142,10 +4453,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response22); 
+                            var result_ = default(Response24); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response22>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response24>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -4168,7 +4479,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response22);
+                        return default(Response24);
                     }
                     finally
                     {
@@ -4296,7 +4607,7 @@ namespace FortifiAPI
         /// <param name="itemName">Item Name</param>
         /// <returns>Config Item</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response23> ItemsAsync(string entityFid, string sectionName, string itemName)
+        public System.Threading.Tasks.Task<Response25> ItemsAsync(string entityFid, string sectionName, string itemName)
         {
             return ItemsAsync(entityFid, sectionName, itemName, System.Threading.CancellationToken.None);
         }
@@ -4308,7 +4619,7 @@ namespace FortifiAPI
         /// <returns>Config Item</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response23> ItemsAsync(string entityFid, string sectionName, string itemName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response25> ItemsAsync(string entityFid, string sectionName, string itemName, System.Threading.CancellationToken cancellationToken)
         {
             if (entityFid == null)
                 throw new System.ArgumentNullException("entityFid");
@@ -4354,10 +4665,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response23); 
+                            var result_ = default(Response25); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response23>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response25>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -4380,7 +4691,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response23);
+                        return default(Response25);
                     }
                     finally
                     {
@@ -4491,7 +4802,7 @@ namespace FortifiAPI
         /// <param name="propertyName">Property Name</param>
         /// <returns>Property Value</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response24> ValuesAsync(string entityFid, string propertyName)
+        public System.Threading.Tasks.Task<Response26> ValuesAsync(string entityFid, string propertyName)
         {
             return ValuesAsync(entityFid, propertyName, System.Threading.CancellationToken.None);
         }
@@ -4502,7 +4813,7 @@ namespace FortifiAPI
         /// <returns>Property Value</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response24> ValuesAsync(string entityFid, string propertyName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response26> ValuesAsync(string entityFid, string propertyName, System.Threading.CancellationToken cancellationToken)
         {
             if (entityFid == null)
                 throw new System.ArgumentNullException("entityFid");
@@ -4544,10 +4855,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response24); 
+                            var result_ = default(Response26); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response24>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response26>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -4570,7 +4881,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response24);
+                        return default(Response26);
                     }
                     finally
                     {
@@ -5322,7 +5633,7 @@ namespace FortifiAPI
         /// <param name="customerFid">Customer FID to use</param>
         /// <returns>List of payment accounts</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response25> PaymentAccountsAsync(string customerFid)
+        public System.Threading.Tasks.Task<Response27> PaymentAccountsAsync(string customerFid)
         {
             return PaymentAccountsAsync(customerFid, System.Threading.CancellationToken.None);
         }
@@ -5332,7 +5643,7 @@ namespace FortifiAPI
         /// <returns>List of payment accounts</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response25> PaymentAccountsAsync(string customerFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response27> PaymentAccountsAsync(string customerFid, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -5370,10 +5681,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response25); 
+                            var result_ = default(Response27); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response25>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response27>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -5402,7 +5713,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response25);
+                        return default(Response27);
                     }
                     finally
                     {
@@ -5424,7 +5735,7 @@ namespace FortifiAPI
         /// <param name="subscriptionFids">Subscription FIDs</param>
         /// <returns>Redirect instructions</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response26> InitialiseAsync(string customerFid, string paymentServiceFid, System.Collections.Generic.IEnumerable<string> subscriptionFids, string successUrl, string cancelUrl, string failUrl)
+        public System.Threading.Tasks.Task<Response28> InitialiseAsync(string customerFid, string paymentServiceFid, System.Collections.Generic.IEnumerable<string> subscriptionFids, string successUrl, string cancelUrl, string failUrl)
         {
             return InitialiseAsync(customerFid, paymentServiceFid, subscriptionFids, successUrl, cancelUrl, failUrl, System.Threading.CancellationToken.None);
         }
@@ -5436,7 +5747,7 @@ namespace FortifiAPI
         /// <returns>Redirect instructions</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response26> InitialiseAsync(string customerFid, string paymentServiceFid, System.Collections.Generic.IEnumerable<string> subscriptionFids, string successUrl, string cancelUrl, string failUrl, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response28> InitialiseAsync(string customerFid, string paymentServiceFid, System.Collections.Generic.IEnumerable<string> subscriptionFids, string successUrl, string cancelUrl, string failUrl, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -5499,10 +5810,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response26); 
+                            var result_ = default(Response28); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response26>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response28>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -5531,7 +5842,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response26);
+                        return default(Response28);
                     }
                     finally
                     {
@@ -6512,12 +6823,194 @@ namespace FortifiAPI
             }
         }
     
+        /// <summary>Retry payment of all customer invoices which are in invoice</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <returns>Invoice set to retry payment</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task RetryAsync(string customerFid)
+        {
+            return RetryAsync(customerFid, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Retry payment of all customer invoices which are in invoice</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <returns>Invoice set to retry payment</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task RetryAsync(string customerFid, System.Threading.CancellationToken cancellationToken)
+        {
+            if (customerFid == null)
+                throw new System.ArgumentNullException("customerFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/customers/{customerFid}/invoices/retry");
+            urlBuilder_.Replace("{customerFid}", System.Uri.EscapeDataString(ConvertToString(customerFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Customer or Invoice not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Retry payment of invoice</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="invoiceFid">Invoice Fid to use</param>
+        /// <returns>Invoice set to retry payment</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task Retry2Async(string customerFid, string invoiceFid)
+        {
+            return Retry2Async(customerFid, invoiceFid, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Retry payment of invoice</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="invoiceFid">Invoice Fid to use</param>
+        /// <returns>Invoice set to retry payment</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task Retry2Async(string customerFid, string invoiceFid, System.Threading.CancellationToken cancellationToken)
+        {
+            if (customerFid == null)
+                throw new System.ArgumentNullException("customerFid");
+    
+            if (invoiceFid == null)
+                throw new System.ArgumentNullException("invoiceFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/customers/{customerFid}/invoices/{invoiceFid}/retry");
+            urlBuilder_.Replace("{customerFid}", System.Uri.EscapeDataString(ConvertToString(customerFid, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{invoiceFid}", System.Uri.EscapeDataString(ConvertToString(invoiceFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Customer or Invoice not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
         /// <summary>Add a credit note to a customers invoice</summary>
         /// <param name="customerFid">Customer FID to use</param>
         /// <param name="invoiceFid">Invoice Fid to use</param>
         /// <returns>Credit Note Added</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response27> CreditNoteAsync(string customerFid, string invoiceFid, InvoiceCreditNotePayload payload)
+        public System.Threading.Tasks.Task<Response29> CreditNoteAsync(string customerFid, string invoiceFid, InvoiceCreditNotePayload payload)
         {
             return CreditNoteAsync(customerFid, invoiceFid, payload, System.Threading.CancellationToken.None);
         }
@@ -6528,7 +7021,7 @@ namespace FortifiAPI
         /// <returns>Credit Note Added</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response27> CreditNoteAsync(string customerFid, string invoiceFid, InvoiceCreditNotePayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response29> CreditNoteAsync(string customerFid, string invoiceFid, InvoiceCreditNotePayload payload, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -6573,10 +7066,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response27); 
+                            var result_ = default(Response29); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response27>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response29>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -6611,7 +7104,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response27);
+                        return default(Response29);
                     }
                     finally
                     {
@@ -6633,7 +7126,7 @@ namespace FortifiAPI
         /// <param name="page">Page number (default: 1)</param>
         /// <returns>List of subscription summaries</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response28> SubscriptionsAsync(string customerFid, int? limit, int? page)
+        public System.Threading.Tasks.Task<Response30> SubscriptionsAsync(string customerFid, int? limit, int? page)
         {
             return SubscriptionsAsync(customerFid, limit, page, System.Threading.CancellationToken.None);
         }
@@ -6645,7 +7138,7 @@ namespace FortifiAPI
         /// <returns>List of subscription summaries</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response28> SubscriptionsAsync(string customerFid, int? limit, int? page, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response30> SubscriptionsAsync(string customerFid, int? limit, int? page, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -6686,10 +7179,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response28); 
+                            var result_ = default(Response30); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response28>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response30>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -6712,7 +7205,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response28);
+                        return default(Response30);
                     }
                     finally
                     {
@@ -6733,7 +7226,7 @@ namespace FortifiAPI
         /// <param name="subscriptionFid">Subscription FID to use</param>
         /// <returns>Loaded subscription</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response29> Subscriptions2Async(string customerFid, string subscriptionFid)
+        public System.Threading.Tasks.Task<Response31> Subscriptions2Async(string customerFid, string subscriptionFid)
         {
             return Subscriptions2Async(customerFid, subscriptionFid, System.Threading.CancellationToken.None);
         }
@@ -6744,7 +7237,7 @@ namespace FortifiAPI
         /// <returns>Loaded subscription</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response29> Subscriptions2Async(string customerFid, string subscriptionFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response31> Subscriptions2Async(string customerFid, string subscriptionFid, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -6786,10 +7279,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response29); 
+                            var result_ = default(Response31); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response29>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response31>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -6818,7 +7311,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response29);
+                        return default(Response31);
                     }
                     finally
                     {
@@ -7129,7 +7622,7 @@ namespace FortifiAPI
         /// <param name="subscriptionFid">Subscription FID to use</param>
         /// <returns>Parent subscription set</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response30> SetParentSubscriptionAsync(string customerFid, string subscriptionFid, string parentSubscriptionFid)
+        public System.Threading.Tasks.Task<Response32> SetParentSubscriptionAsync(string customerFid, string subscriptionFid, string parentSubscriptionFid)
         {
             return SetParentSubscriptionAsync(customerFid, subscriptionFid, parentSubscriptionFid, System.Threading.CancellationToken.None);
         }
@@ -7140,7 +7633,7 @@ namespace FortifiAPI
         /// <returns>Parent subscription set</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response30> SetParentSubscriptionAsync(string customerFid, string subscriptionFid, string parentSubscriptionFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response32> SetParentSubscriptionAsync(string customerFid, string subscriptionFid, string parentSubscriptionFid, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -7191,10 +7684,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response30); 
+                            var result_ = default(Response32); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response30>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response32>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -7229,7 +7722,337 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response30);
+                        return default(Response32);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Calculates the changes before a modification to a subscription</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="subscriptionFid">Subscription FID to use</param>
+        /// <returns>Calculated result of modification</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response33> CalculateModificationAsync(string customerFid, string subscriptionFid, ModifySubscriptionPayload payload)
+        {
+            return CalculateModificationAsync(customerFid, subscriptionFid, payload, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Calculates the changes before a modification to a subscription</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="subscriptionFid">Subscription FID to use</param>
+        /// <returns>Calculated result of modification</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response33> CalculateModificationAsync(string customerFid, string subscriptionFid, ModifySubscriptionPayload payload, System.Threading.CancellationToken cancellationToken)
+        {
+            if (customerFid == null)
+                throw new System.ArgumentNullException("customerFid");
+    
+            if (subscriptionFid == null)
+                throw new System.ArgumentNullException("subscriptionFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/customers/{customerFid}/subscriptions/{subscriptionFid}/calculateModification");
+            urlBuilder_.Replace("{customerFid}", System.Uri.EscapeDataString(ConvertToString(customerFid, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{subscriptionFid}", System.Uri.EscapeDataString(ConvertToString(subscriptionFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("multipart/form-data");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response33); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response33>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "x-400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Invalid payload data", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Subscription or Customer not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response33);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Calculates the result of a potential refund on a subscription</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="subscriptionFid">Subscription FID to use</param>
+        /// <returns>Returns calculated refund amounts</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response34> CalculateRefundAsync(string customerFid, string subscriptionFid, CalculateRefundPayload payload)
+        {
+            return CalculateRefundAsync(customerFid, subscriptionFid, payload, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Calculates the result of a potential refund on a subscription</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="subscriptionFid">Subscription FID to use</param>
+        /// <returns>Returns calculated refund amounts</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response34> CalculateRefundAsync(string customerFid, string subscriptionFid, CalculateRefundPayload payload, System.Threading.CancellationToken cancellationToken)
+        {
+            if (customerFid == null)
+                throw new System.ArgumentNullException("customerFid");
+    
+            if (subscriptionFid == null)
+                throw new System.ArgumentNullException("subscriptionFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/customers/{customerFid}/subscriptions/{subscriptionFid}/calculateRefund");
+            urlBuilder_.Replace("{customerFid}", System.Uri.EscapeDataString(ConvertToString(customerFid, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{subscriptionFid}", System.Uri.EscapeDataString(ConvertToString(subscriptionFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response34); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response34>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "x-400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Invalid payload data", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Subscription not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response34);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Set paymentAccount for subscription. If changing a payment method from an Automatic Payment Method such as PayPal Recurring Payments, any other subscriptions paid with the same Agreement will be set to Default Payment Method and the Agreement will be cancelled</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="subscriptionFid">Subscription FID to use</param>
+        /// <returns>New payment method set</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task SetPaymentAccountAsync(string customerFid, string subscriptionFid, string paymentAccountFid)
+        {
+            return SetPaymentAccountAsync(customerFid, subscriptionFid, paymentAccountFid, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Set paymentAccount for subscription. If changing a payment method from an Automatic Payment Method such as PayPal Recurring Payments, any other subscriptions paid with the same Agreement will be set to Default Payment Method and the Agreement will be cancelled</summary>
+        /// <param name="customerFid">Customer FID to use</param>
+        /// <param name="subscriptionFid">Subscription FID to use</param>
+        /// <returns>New payment method set</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task SetPaymentAccountAsync(string customerFid, string subscriptionFid, string paymentAccountFid, System.Threading.CancellationToken cancellationToken)
+        {
+            if (customerFid == null)
+                throw new System.ArgumentNullException("customerFid");
+    
+            if (subscriptionFid == null)
+                throw new System.ArgumentNullException("subscriptionFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/customers/{customerFid}/subscriptions/{subscriptionFid}/setPaymentAccount");
+            urlBuilder_.Replace("{customerFid}", System.Uri.EscapeDataString(ConvertToString(customerFid, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{subscriptionFid}", System.Uri.EscapeDataString(ConvertToString(subscriptionFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var boundary_ = System.Guid.NewGuid().ToString();
+                    var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
+                    content_.Headers.Remove("Content-Type");
+                    content_.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary_);
+                    if (paymentAccountFid != null)
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(paymentAccountFid, System.Globalization.CultureInfo.InvariantCulture)), "paymentAccountFid");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Subscription or PaymentAccount not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
                     }
                     finally
                     {
@@ -7250,7 +8073,7 @@ namespace FortifiAPI
         /// <param name="subscriptionFid">Subscription FID to use</param>
         /// <returns>Created new open order</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response31> ModifyAsync(string customerFid, string subscriptionFid, ModifySubscriptionPayload payload)
+        public System.Threading.Tasks.Task<Response35> ModifyAsync(string customerFid, string subscriptionFid, ModifySubscriptionPayload payload)
         {
             return ModifyAsync(customerFid, subscriptionFid, payload, System.Threading.CancellationToken.None);
         }
@@ -7261,7 +8084,7 @@ namespace FortifiAPI
         /// <returns>Created new open order</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response31> ModifyAsync(string customerFid, string subscriptionFid, ModifySubscriptionPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response35> ModifyAsync(string customerFid, string subscriptionFid, ModifySubscriptionPayload payload, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -7306,10 +8129,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response31); 
+                            var result_ = default(Response35); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response31>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response35>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -7344,7 +8167,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response31);
+                        return default(Response35);
                     }
                     finally
                     {
@@ -7365,7 +8188,7 @@ namespace FortifiAPI
         /// <param name="subscriptionFid">Subscription FID to use</param>
         /// <returns>Subscription price updated</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response32> UpdateRenewalPriceAsync(string customerFid, string subscriptionFid, string priceFid)
+        public System.Threading.Tasks.Task<Response36> UpdateRenewalPriceAsync(string customerFid, string subscriptionFid, string priceFid)
         {
             return UpdateRenewalPriceAsync(customerFid, subscriptionFid, priceFid, System.Threading.CancellationToken.None);
         }
@@ -7376,7 +8199,7 @@ namespace FortifiAPI
         /// <returns>Subscription price updated</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response32> UpdateRenewalPriceAsync(string customerFid, string subscriptionFid, string priceFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response36> UpdateRenewalPriceAsync(string customerFid, string subscriptionFid, string priceFid, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -7427,10 +8250,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response32); 
+                            var result_ = default(Response36); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response32>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response36>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -7465,7 +8288,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response32);
+                        return default(Response36);
                     }
                     finally
                     {
@@ -7583,7 +8406,7 @@ namespace FortifiAPI
         /// <param name="priceFid">Price FID</param>
         /// <returns>Created new open order</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response33> PreRenewAsync(string customerFid, string subscriptionFid, string priceFid)
+        public System.Threading.Tasks.Task<Response37> PreRenewAsync(string customerFid, string subscriptionFid, string priceFid)
         {
             return PreRenewAsync(customerFid, subscriptionFid, priceFid, System.Threading.CancellationToken.None);
         }
@@ -7595,7 +8418,7 @@ namespace FortifiAPI
         /// <returns>Created new open order</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response33> PreRenewAsync(string customerFid, string subscriptionFid, string priceFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response37> PreRenewAsync(string customerFid, string subscriptionFid, string priceFid, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -7646,10 +8469,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response33); 
+                            var result_ = default(Response37); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response33>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response37>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -7684,7 +8507,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response33);
+                        return default(Response37);
                     }
                     finally
                     {
@@ -7705,7 +8528,7 @@ namespace FortifiAPI
         /// <param name="subscriptionFid">Subscription FID to use</param>
         /// <returns>Subscription cancelled</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response34> CancelAsync(string customerFid, string subscriptionFid, SubscriptionCancelPayload payload)
+        public System.Threading.Tasks.Task<Response38> CancelAsync(string customerFid, string subscriptionFid, SubscriptionCancelPayload payload)
         {
             return CancelAsync(customerFid, subscriptionFid, payload, System.Threading.CancellationToken.None);
         }
@@ -7716,7 +8539,7 @@ namespace FortifiAPI
         /// <returns>Subscription cancelled</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response34> CancelAsync(string customerFid, string subscriptionFid, SubscriptionCancelPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response38> CancelAsync(string customerFid, string subscriptionFid, SubscriptionCancelPayload payload, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -7761,10 +8584,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response34); 
+                            var result_ = default(Response38); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response34>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response38>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -7799,7 +8622,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response34);
+                        return default(Response38);
                     }
                     finally
                     {
@@ -7819,7 +8642,7 @@ namespace FortifiAPI
         /// <param name="customerFid">Customer FID to use</param>
         /// <returns>Subject Access Request</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response35> SarAsync(string customerFid)
+        public System.Threading.Tasks.Task<Response39> SarAsync(string customerFid)
         {
             return SarAsync(customerFid, System.Threading.CancellationToken.None);
         }
@@ -7829,7 +8652,7 @@ namespace FortifiAPI
         /// <returns>Subject Access Request</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response35> SarAsync(string customerFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response39> SarAsync(string customerFid, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -7868,10 +8691,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response35); 
+                            var result_ = default(Response39); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response35>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response39>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -7900,7 +8723,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response35);
+                        return default(Response39);
                     }
                     finally
                     {
@@ -7920,7 +8743,7 @@ namespace FortifiAPI
         /// <param name="customerFid">Customer FID to use</param>
         /// <returns>Anonymize Request</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response36> AnonymizeAsync(string customerFid, bool? customer, bool? tickets, bool? chats, bool? orders, bool? emails, bool? phones, bool? addresses, bool? paymentAccounts)
+        public System.Threading.Tasks.Task<Response40> AnonymizeAsync(string customerFid, bool? customer, bool? tickets, bool? chats, bool? orders, bool? emails, bool? phones, bool? addresses, bool? paymentAccounts)
         {
             return AnonymizeAsync(customerFid, customer, tickets, chats, orders, emails, phones, addresses, paymentAccounts, System.Threading.CancellationToken.None);
         }
@@ -7930,7 +8753,7 @@ namespace FortifiAPI
         /// <returns>Anonymize Request</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response36> AnonymizeAsync(string customerFid, bool? customer, bool? tickets, bool? chats, bool? orders, bool? emails, bool? phones, bool? addresses, bool? paymentAccounts, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response40> AnonymizeAsync(string customerFid, bool? customer, bool? tickets, bool? chats, bool? orders, bool? emails, bool? phones, bool? addresses, bool? paymentAccounts, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -7989,10 +8812,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response36); 
+                            var result_ = default(Response40); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response36>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response40>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -8005,379 +8828,6 @@ namespace FortifiAPI
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("Invalid payload data", (int)response_.StatusCode, responseData_, headers_, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Envelope); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
-                        }
-            
-                        return default(Response36);
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <summary>List all products</summary>
-        /// <returns>Products retrieved</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response37> ProductsAsync()
-        {
-            return ProductsAsync(System.Threading.CancellationToken.None);
-        }
-    
-        /// <summary>List all products</summary>
-        /// <returns>Products retrieved</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response37> ProductsAsync(System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/products");
-    
-            var client_ = new System.Net.Http.HttpClient();
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response37); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response37>(responseData_, _settings.Value);
-                                return result_; 
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Envelope); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
-                        }
-            
-                        return default(Response37);
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <summary>Retrieve Product Prices</summary>
-        /// <returns>List of product prices</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response38> PricesAsync(string productFid, string currency)
-        {
-            return PricesAsync(productFid, currency, System.Threading.CancellationToken.None);
-        }
-    
-        /// <summary>Retrieve Product Prices</summary>
-        /// <returns>List of product prices</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response38> PricesAsync(string productFid, string currency, System.Threading.CancellationToken cancellationToken)
-        {
-            if (productFid == null)
-                throw new System.ArgumentNullException("productFid");
-    
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/products/{productFid}/prices");
-            urlBuilder_.Replace("{productFid}", System.Uri.EscapeDataString(ConvertToString(productFid, System.Globalization.CultureInfo.InvariantCulture)));
-    
-            var client_ = new System.Net.Http.HttpClient();
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var boundary_ = System.Guid.NewGuid().ToString();
-                    var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
-                    content_.Headers.Remove("Content-Type");
-                    content_.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary_);
-                    if (currency != null)
-                        content_.Add(new System.Net.Http.StringContent(ConvertToString(currency, System.Globalization.CultureInfo.InvariantCulture)), "currency");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response38); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response38>(responseData_, _settings.Value);
-                                return result_; 
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                        }
-                        else
-                        if (status_ == "x-404") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("Product not found", (int)response_.StatusCode, responseData_, headers_, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Envelope); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
-                        }
-            
-                        return default(Response38);
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <summary>Get a list of all product groups</summary>
-        /// <returns>Products groups</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response39> GroupsAsync()
-        {
-            return GroupsAsync(System.Threading.CancellationToken.None);
-        }
-    
-        /// <summary>Get a list of all product groups</summary>
-        /// <returns>Products groups</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response39> GroupsAsync(System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/products/groups");
-    
-            var client_ = new System.Net.Http.HttpClient();
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response39); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response39>(responseData_, _settings.Value);
-                                return result_; 
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Envelope); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
-                        }
-            
-                        return default(Response39);
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <summary>Get a list of products belonging to the group</summary>
-        /// <returns>Products</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response40> Products2Async(string productGroupFid)
-        {
-            return Products2Async(productGroupFid, System.Threading.CancellationToken.None);
-        }
-    
-        /// <summary>Get a list of products belonging to the group</summary>
-        /// <returns>Products</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response40> Products2Async(string productGroupFid, System.Threading.CancellationToken cancellationToken)
-        {
-            if (productGroupFid == null)
-                throw new System.ArgumentNullException("productGroupFid");
-    
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/products/groups/{productGroupFid}/products");
-            urlBuilder_.Replace("{productGroupFid}", System.Uri.EscapeDataString(ConvertToString(productGroupFid, System.Globalization.CultureInfo.InvariantCulture)));
-    
-            var client_ = new System.Net.Http.HttpClient();
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response40); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response40>(responseData_, _settings.Value);
-                                return result_; 
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
                         }
                         else
                         {
@@ -8410,32 +8860,29 @@ namespace FortifiAPI
             }
         }
     
-        /// <summary>Create a new order</summary>
-        /// <returns>Order created successfully</returns>
+        /// <summary>List all products</summary>
+        /// <returns>Products retrieved</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response41> OrdersAsync(CreateOrderPayload payload)
+        public System.Threading.Tasks.Task<Response41> ProductsAsync()
         {
-            return OrdersAsync(payload, System.Threading.CancellationToken.None);
+            return ProductsAsync(System.Threading.CancellationToken.None);
         }
     
-        /// <summary>Create a new order</summary>
-        /// <returns>Order created successfully</returns>
+        /// <summary>List all products</summary>
+        /// <returns>Products retrieved</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response41> OrdersAsync(CreateOrderPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response41> ProductsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/orders");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/products");
     
             var client_ = new System.Net.Http.HttpClient();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -8501,32 +8948,39 @@ namespace FortifiAPI
             }
         }
     
-        /// <summary>Retrieve an order</summary>
-        /// <returns>Order retrieved</returns>
+        /// <summary>Retrieve Product Prices</summary>
+        /// <returns>List of product prices</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response42> Orders2Async(string orderFid)
+        public System.Threading.Tasks.Task<Response42> PricesAsync(string productFid, string currency)
         {
-            return Orders2Async(orderFid, System.Threading.CancellationToken.None);
+            return PricesAsync(productFid, currency, System.Threading.CancellationToken.None);
         }
     
-        /// <summary>Retrieve an order</summary>
-        /// <returns>Order retrieved</returns>
+        /// <summary>Retrieve Product Prices</summary>
+        /// <returns>List of product prices</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response42> Orders2Async(string orderFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response42> PricesAsync(string productFid, string currency, System.Threading.CancellationToken cancellationToken)
         {
-            if (orderFid == null)
-                throw new System.ArgumentNullException("orderFid");
+            if (productFid == null)
+                throw new System.ArgumentNullException("productFid");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/orders/{orderFid}");
-            urlBuilder_.Replace("{orderFid}", System.Uri.EscapeDataString(ConvertToString(orderFid, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/products/{productFid}/prices");
+            urlBuilder_.Replace("{productFid}", System.Uri.EscapeDataString(ConvertToString(productFid, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+                    var boundary_ = System.Guid.NewGuid().ToString();
+                    var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
+                    content_.Headers.Remove("Content-Type");
+                    content_.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary_);
+                    if (currency != null)
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(currency, System.Globalization.CultureInfo.InvariantCulture)), "currency");
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
     
@@ -8566,7 +9020,7 @@ namespace FortifiAPI
                         if (status_ == "x-404") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("Order not found", (int)response_.StatusCode, responseData_, headers_, null);
+                            throw new SwaggerException("Product not found", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         {
@@ -8599,36 +9053,29 @@ namespace FortifiAPI
             }
         }
     
-        /// <summary>Verify an order, returning any security urls</summary>
-        /// <returns>Order payment account verified</returns>
+        /// <summary>Get a list of all product groups</summary>
+        /// <returns>Products groups</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response43> VerifyAsync(string orderFid, VerifyOrderPayload payload)
+        public System.Threading.Tasks.Task<Response43> GroupsAsync()
         {
-            return VerifyAsync(orderFid, payload, System.Threading.CancellationToken.None);
+            return GroupsAsync(System.Threading.CancellationToken.None);
         }
     
-        /// <summary>Verify an order, returning any security urls</summary>
-        /// <returns>Order payment account verified</returns>
+        /// <summary>Get a list of all product groups</summary>
+        /// <returns>Products groups</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response43> VerifyAsync(string orderFid, VerifyOrderPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response43> GroupsAsync(System.Threading.CancellationToken cancellationToken)
         {
-            if (orderFid == null)
-                throw new System.ArgumentNullException("orderFid");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/orders/{orderFid}/verify");
-            urlBuilder_.Replace("{orderFid}", System.Uri.EscapeDataString(ConvertToString(orderFid, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/products/groups");
     
             var client_ = new System.Net.Http.HttpClient();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -8694,34 +9141,33 @@ namespace FortifiAPI
             }
         }
     
-        /// <summary>Cancel an order</summary>
-        /// <returns>Order cancelled</returns>
+        /// <summary>Get a list of products belonging to the group</summary>
+        /// <returns>Products</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response44> Cancel2Async(string orderFid)
+        public System.Threading.Tasks.Task<Response44> Products2Async(string productGroupFid)
         {
-            return Cancel2Async(orderFid, System.Threading.CancellationToken.None);
+            return Products2Async(productGroupFid, System.Threading.CancellationToken.None);
         }
     
-        /// <summary>Cancel an order</summary>
-        /// <returns>Order cancelled</returns>
+        /// <summary>Get a list of products belonging to the group</summary>
+        /// <returns>Products</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response44> Cancel2Async(string orderFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response44> Products2Async(string productGroupFid, System.Threading.CancellationToken cancellationToken)
         {
-            if (orderFid == null)
-                throw new System.ArgumentNullException("orderFid");
+            if (productGroupFid == null)
+                throw new System.ArgumentNullException("productGroupFid");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/orders/{orderFid}/cancel");
-            urlBuilder_.Replace("{orderFid}", System.Uri.EscapeDataString(ConvertToString(orderFid, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/products/groups/{productGroupFid}/products");
+            urlBuilder_.Replace("{productGroupFid}", System.Uri.EscapeDataString(ConvertToString(productGroupFid, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
-                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -8787,10 +9233,387 @@ namespace FortifiAPI
             }
         }
     
+        /// <summary>Create a new order</summary>
+        /// <returns>Order created successfully</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response45> OrdersAsync(CreateOrderPayload payload)
+        {
+            return OrdersAsync(payload, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Create a new order</summary>
+        /// <returns>Order created successfully</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response45> OrdersAsync(CreateOrderPayload payload, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/orders");
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response45); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response45>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response45);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Retrieve an order</summary>
+        /// <returns>Order retrieved</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response46> Orders2Async(string orderFid)
+        {
+            return Orders2Async(orderFid, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Retrieve an order</summary>
+        /// <returns>Order retrieved</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response46> Orders2Async(string orderFid, System.Threading.CancellationToken cancellationToken)
+        {
+            if (orderFid == null)
+                throw new System.ArgumentNullException("orderFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/orders/{orderFid}");
+            urlBuilder_.Replace("{orderFid}", System.Uri.EscapeDataString(ConvertToString(orderFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response46); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response46>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Order not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response46);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Verify an order, returning any security urls</summary>
+        /// <returns>Order payment account verified</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response47> VerifyAsync(string orderFid, VerifyOrderPayload payload)
+        {
+            return VerifyAsync(orderFid, payload, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Verify an order, returning any security urls</summary>
+        /// <returns>Order payment account verified</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response47> VerifyAsync(string orderFid, VerifyOrderPayload payload, System.Threading.CancellationToken cancellationToken)
+        {
+            if (orderFid == null)
+                throw new System.ArgumentNullException("orderFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/orders/{orderFid}/verify");
+            urlBuilder_.Replace("{orderFid}", System.Uri.EscapeDataString(ConvertToString(orderFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response47); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response47>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response47);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Cancel an order</summary>
+        /// <returns>Order cancelled</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response48> Cancel2Async(string orderFid)
+        {
+            return Cancel2Async(orderFid, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Cancel an order</summary>
+        /// <returns>Order cancelled</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response48> Cancel2Async(string orderFid, System.Threading.CancellationToken cancellationToken)
+        {
+            if (orderFid == null)
+                throw new System.ArgumentNullException("orderFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/orders/{orderFid}/cancel");
+            urlBuilder_.Replace("{orderFid}", System.Uri.EscapeDataString(ConvertToString(orderFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response48); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response48>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response48);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
         /// <summary>Confirm an order, authorize the payment</summary>
         /// <returns>Order confirmed and payment authroized</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response45> ConfirmCardAsync(string orderFid, ConfirmCardOrderPayload payload)
+        public System.Threading.Tasks.Task<Response49> ConfirmCardAsync(string orderFid, ConfirmCardOrderPayload payload)
         {
             return ConfirmCardAsync(orderFid, payload, System.Threading.CancellationToken.None);
         }
@@ -8799,7 +9622,7 @@ namespace FortifiAPI
         /// <returns>Order confirmed and payment authroized</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response45> ConfirmCardAsync(string orderFid, ConfirmCardOrderPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response49> ConfirmCardAsync(string orderFid, ConfirmCardOrderPayload payload, System.Threading.CancellationToken cancellationToken)
         {
             if (orderFid == null)
                 throw new System.ArgumentNullException("orderFid");
@@ -8840,10 +9663,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response45); 
+                            var result_ = default(Response49); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response45>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response49>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -8872,7 +9695,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response45);
+                        return default(Response49);
                     }
                     finally
                     {
@@ -8891,7 +9714,7 @@ namespace FortifiAPI
         /// <summary>Confirm an order, authorize the payment</summary>
         /// <returns>Order confirmed and payment authroized</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response46> ConfirmPayPalAsync(string orderFid, ConfirmPayPalOrderPayload payload)
+        public System.Threading.Tasks.Task<Response50> ConfirmPayPalAsync(string orderFid, ConfirmPayPalOrderPayload payload)
         {
             return ConfirmPayPalAsync(orderFid, payload, System.Threading.CancellationToken.None);
         }
@@ -8900,7 +9723,7 @@ namespace FortifiAPI
         /// <returns>Order confirmed and payment authroized</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response46> ConfirmPayPalAsync(string orderFid, ConfirmPayPalOrderPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response50> ConfirmPayPalAsync(string orderFid, ConfirmPayPalOrderPayload payload, System.Threading.CancellationToken cancellationToken)
         {
             if (orderFid == null)
                 throw new System.ArgumentNullException("orderFid");
@@ -8941,10 +9764,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response46); 
+                            var result_ = default(Response50); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response46>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response50>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -8973,7 +9796,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response46);
+                        return default(Response50);
                     }
                     finally
                     {
@@ -8992,7 +9815,7 @@ namespace FortifiAPI
         /// <summary>Confirm an order, await payment</summary>
         /// <returns>Order confirmed; awaiting blockchain confirmation.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response47> ConfirmCoinbaseAsync(string orderFid)
+        public System.Threading.Tasks.Task<Response51> ConfirmCoinbaseAsync(string orderFid)
         {
             return ConfirmCoinbaseAsync(orderFid, System.Threading.CancellationToken.None);
         }
@@ -9001,7 +9824,7 @@ namespace FortifiAPI
         /// <returns>Order confirmed; awaiting blockchain confirmation.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response47> ConfirmCoinbaseAsync(string orderFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response51> ConfirmCoinbaseAsync(string orderFid, System.Threading.CancellationToken cancellationToken)
         {
             if (orderFid == null)
                 throw new System.ArgumentNullException("orderFid");
@@ -9040,10 +9863,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response47); 
+                            var result_ = default(Response51); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response47>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response51>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -9072,7 +9895,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response47);
+                        return default(Response51);
                     }
                     finally
                     {
@@ -9091,7 +9914,7 @@ namespace FortifiAPI
         /// <summary>Confirm an order with a new card, authorize the payment</summary>
         /// <returns>Order confirmed and payment authroized</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response48> ConfirmNewCardAsync(string orderFid, ConfirmOrderWithNewCardPayload payload)
+        public System.Threading.Tasks.Task<Response52> ConfirmNewCardAsync(string orderFid, ConfirmOrderWithNewCardPayload payload)
         {
             return ConfirmNewCardAsync(orderFid, payload, System.Threading.CancellationToken.None);
         }
@@ -9100,7 +9923,7 @@ namespace FortifiAPI
         /// <returns>Order confirmed and payment authroized</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response48> ConfirmNewCardAsync(string orderFid, ConfirmOrderWithNewCardPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response52> ConfirmNewCardAsync(string orderFid, ConfirmOrderWithNewCardPayload payload, System.Threading.CancellationToken cancellationToken)
         {
             if (orderFid == null)
                 throw new System.ArgumentNullException("orderFid");
@@ -9141,10 +9964,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response48); 
+                            var result_ = default(Response52); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response48>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response52>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -9173,7 +9996,105 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response48);
+                        return default(Response52);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Retrieve fraud scan</summary>
+        /// <returns>Fraud scan result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response53> FraudScanAsync(string orderFid)
+        {
+            return FraudScanAsync(orderFid, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Retrieve fraud scan</summary>
+        /// <returns>Fraud scan result</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response53> FraudScanAsync(string orderFid, System.Threading.CancellationToken cancellationToken)
+        {
+            if (orderFid == null)
+                throw new System.ArgumentNullException("orderFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/orders/{orderFid}/fraudScan");
+            urlBuilder_.Replace("{orderFid}", System.Uri.EscapeDataString(ConvertToString(orderFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response53); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response53>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Fraud scan not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response53);
                     }
                     finally
                     {
@@ -9192,7 +10113,7 @@ namespace FortifiAPI
         /// <summary>Retrieve order products</summary>
         /// <returns>List of order products</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response49> Products3Async(string orderFid)
+        public System.Threading.Tasks.Task<Response54> Products3Async(string orderFid)
         {
             return Products3Async(orderFid, System.Threading.CancellationToken.None);
         }
@@ -9201,7 +10122,7 @@ namespace FortifiAPI
         /// <returns>List of order products</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response49> Products3Async(string orderFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response54> Products3Async(string orderFid, System.Threading.CancellationToken cancellationToken)
         {
             if (orderFid == null)
                 throw new System.ArgumentNullException("orderFid");
@@ -9239,10 +10160,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response49); 
+                            var result_ = default(Response54); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response49>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response54>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -9271,7 +10192,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response49);
+                        return default(Response54);
                     }
                     finally
                     {
@@ -9290,7 +10211,7 @@ namespace FortifiAPI
         /// <summary>Add a product to an order</summary>
         /// <returns>Product added to the order successfully</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response50> Products4Async(string orderFid, OrderProductsPayload payload)
+        public System.Threading.Tasks.Task<Response55> Products4Async(string orderFid, OrderProductsPayload payload)
         {
             return Products4Async(orderFid, payload, System.Threading.CancellationToken.None);
         }
@@ -9299,7 +10220,7 @@ namespace FortifiAPI
         /// <returns>Product added to the order successfully</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response50> Products4Async(string orderFid, OrderProductsPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response55> Products4Async(string orderFid, OrderProductsPayload payload, System.Threading.CancellationToken cancellationToken)
         {
             if (orderFid == null)
                 throw new System.ArgumentNullException("orderFid");
@@ -9340,10 +10261,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response50); 
+                            var result_ = default(Response55); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response50>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response55>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -9366,7 +10287,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response50);
+                        return default(Response55);
                     }
                     finally
                     {
@@ -9385,7 +10306,7 @@ namespace FortifiAPI
         /// <summary>Set the products on an order</summary>
         /// <returns>Order products successfully updated</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response51> Products5Async(string orderFid, OrderProductsPayload payload)
+        public System.Threading.Tasks.Task<Response56> Products5Async(string orderFid, OrderProductsPayload payload)
         {
             return Products5Async(orderFid, payload, System.Threading.CancellationToken.None);
         }
@@ -9394,7 +10315,7 @@ namespace FortifiAPI
         /// <returns>Order products successfully updated</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response51> Products5Async(string orderFid, OrderProductsPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response56> Products5Async(string orderFid, OrderProductsPayload payload, System.Threading.CancellationToken cancellationToken)
         {
             if (orderFid == null)
                 throw new System.ArgumentNullException("orderFid");
@@ -9435,10 +10356,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response51); 
+                            var result_ = default(Response56); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response51>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response56>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -9461,7 +10382,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response51);
+                        return default(Response56);
                     }
                     finally
                     {
@@ -10380,7 +11301,7 @@ namespace FortifiAPI
         /// <summary>Create a new polymer</summary>
         /// <returns>Polymer created</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response52> PolymersAsync(CreatePolymerPayload payload)
+        public System.Threading.Tasks.Task<Response57> PolymersAsync(CreatePolymerPayload payload)
         {
             return PolymersAsync(payload, System.Threading.CancellationToken.None);
         }
@@ -10389,7 +11310,7 @@ namespace FortifiAPI
         /// <returns>Polymer created</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response52> PolymersAsync(CreatePolymerPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response57> PolymersAsync(CreatePolymerPayload payload, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/polymers");
@@ -10426,10 +11347,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response52); 
+                            var result_ = default(Response57); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response52>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response57>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -10458,7 +11379,7 @@ namespace FortifiAPI
                             throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
             
-                        return default(Response52);
+                        return default(Response57);
                     }
                     finally
                     {
@@ -10477,7 +11398,7 @@ namespace FortifiAPI
         /// <summary>Read a polymer</summary>
         /// <returns>Polymer Information</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response53> Polymers2Async(string polymerFid)
+        public System.Threading.Tasks.Task<Response58> Polymers2Async(string polymerFid)
         {
             return Polymers2Async(polymerFid, System.Threading.CancellationToken.None);
         }
@@ -10486,7 +11407,7 @@ namespace FortifiAPI
         /// <returns>Polymer Information</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response53> Polymers2Async(string polymerFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response58> Polymers2Async(string polymerFid, System.Threading.CancellationToken cancellationToken)
         {
             if (polymerFid == null)
                 throw new System.ArgumentNullException("polymerFid");
@@ -10524,10 +11445,10 @@ namespace FortifiAPI
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response53); 
+                            var result_ = default(Response58); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response53>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response58>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -10540,469 +11461,6 @@ namespace FortifiAPI
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("Polymer not found", (int)response_.StatusCode, responseData_, headers_, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Envelope); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
-                        }
-            
-                        return default(Response53);
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <summary>Retrieve all offers</summary>
-        /// <returns>Available Offers</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response54> Offers3Async()
-        {
-            return Offers3Async(System.Threading.CancellationToken.None);
-        }
-    
-        /// <summary>Retrieve all offers</summary>
-        /// <returns>Available Offers</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response54> Offers3Async(System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/products/offers");
-    
-            var client_ = new System.Net.Http.HttpClient();
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response54); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response54>(responseData_, _settings.Value);
-                                return result_; 
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Envelope); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
-                        }
-            
-                        return default(Response54);
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <summary>Retrieve A Licence</summary>
-        /// <returns>Licence Information</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response55> CheckAsync(string key)
-        {
-            return CheckAsync(key, System.Threading.CancellationToken.None);
-        }
-    
-        /// <summary>Retrieve A Licence</summary>
-        /// <returns>Licence Information</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response55> CheckAsync(string key, System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/licence/check?");
-            if (key != null) urlBuilder_.Append("key=").Append(System.Uri.EscapeDataString(ConvertToString(key, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Length--;
-    
-            var client_ = new System.Net.Http.HttpClient();
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response55); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response55>(responseData_, _settings.Value);
-                                return result_; 
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                        }
-                        else
-                        if (status_ == "x-404") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("Licence Not Valid", (int)response_.StatusCode, responseData_, headers_, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Envelope); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
-                        }
-            
-                        return default(Response55);
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <summary>Get a list of all reason groups</summary>
-        /// <returns>Reason groups</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response56> Groups2Async(string reasonGroupType)
-        {
-            return Groups2Async(reasonGroupType, System.Threading.CancellationToken.None);
-        }
-    
-        /// <summary>Get a list of all reason groups</summary>
-        /// <returns>Reason groups</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response56> Groups2Async(string reasonGroupType, System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/reasons/groups?");
-            if (reasonGroupType != null) urlBuilder_.Append("reasonGroupType=").Append(System.Uri.EscapeDataString(ConvertToString(reasonGroupType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Length--;
-    
-            var client_ = new System.Net.Http.HttpClient();
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response56); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response56>(responseData_, _settings.Value);
-                                return result_; 
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Envelope); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
-                        }
-            
-                        return default(Response56);
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <summary>Get all the reasons for the reason group</summary>
-        /// <returns>Reason Group retrieved</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response57> Groups3Async(string reasonGroupFid)
-        {
-            return Groups3Async(reasonGroupFid, System.Threading.CancellationToken.None);
-        }
-    
-        /// <summary>Get all the reasons for the reason group</summary>
-        /// <returns>Reason Group retrieved</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response57> Groups3Async(string reasonGroupFid, System.Threading.CancellationToken cancellationToken)
-        {
-            if (reasonGroupFid == null)
-                throw new System.ArgumentNullException("reasonGroupFid");
-    
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/reasons/groups/{reasonGroupFid}");
-            urlBuilder_.Replace("{reasonGroupFid}", System.Uri.EscapeDataString(ConvertToString(reasonGroupFid, System.Globalization.CultureInfo.InvariantCulture)));
-    
-            var client_ = new System.Net.Http.HttpClient();
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response57); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response57>(responseData_, _settings.Value);
-                                return result_; 
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                        }
-                        else
-                        if (status_ == "x-404") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("reasonGroupFid not found", (int)response_.StatusCode, responseData_, headers_, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Envelope); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
-                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
-                        }
-            
-                        return default(Response57);
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <summary>Create a support ticket</summary>
-        /// <returns>Ticket Information</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response58> Tickets3Async(CreateTicketPayload payload)
-        {
-            return Tickets3Async(payload, System.Threading.CancellationToken.None);
-        }
-    
-        /// <summary>Create a support ticket</summary>
-        /// <returns>Ticket Information</returns>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response58> Tickets3Async(CreateTicketPayload payload, System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/tickets");
-    
-            var client_ = new System.Net.Http.HttpClient();
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(Response58); 
-                            try
-                            {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response58>(responseData_, _settings.Value);
-                                return result_; 
-                            } 
-                            catch (System.Exception exception_) 
-                            {
-                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
-                            }
                         }
                         else
                         {
@@ -11035,22 +11493,22 @@ namespace FortifiAPI
             }
         }
     
-        /// <summary>Retrieve all services</summary>
-        /// <returns>Service listing</returns>
+        /// <summary>Retrieve all offers</summary>
+        /// <returns>Available Offers</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response59> ServicesAsync()
+        public System.Threading.Tasks.Task<Response59> Offers3Async()
         {
-            return ServicesAsync(System.Threading.CancellationToken.None);
+            return Offers3Async(System.Threading.CancellationToken.None);
         }
     
-        /// <summary>Retrieve all services</summary>
-        /// <returns>Service listing</returns>
+        /// <summary>Retrieve all offers</summary>
+        /// <returns>Available Offers</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response59> ServicesAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response59> Offers3Async(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/services");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/products/offers");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -11123,37 +11581,30 @@ namespace FortifiAPI
             }
         }
     
-        /// <summary>Retrieve incidents for service within timeframe</summary>
-        /// <param name="serviceFid">Service FID to use</param>
-        /// <returns>Service incidents</returns>
+        /// <summary>Retrieve A Licence</summary>
+        /// <returns>Licence Information</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response60> IncidentsAsync(string serviceFid, ServiceIncidentsPayload payload)
+        public System.Threading.Tasks.Task<Response60> CheckAsync(string key)
         {
-            return IncidentsAsync(serviceFid, payload, System.Threading.CancellationToken.None);
+            return CheckAsync(key, System.Threading.CancellationToken.None);
         }
     
-        /// <summary>Retrieve incidents for service within timeframe</summary>
-        /// <param name="serviceFid">Service FID to use</param>
-        /// <returns>Service incidents</returns>
+        /// <summary>Retrieve A Licence</summary>
+        /// <returns>Licence Information</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response60> IncidentsAsync(string serviceFid, ServiceIncidentsPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response60> CheckAsync(string key, System.Threading.CancellationToken cancellationToken)
         {
-            if (serviceFid == null)
-                throw new System.ArgumentNullException("serviceFid");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/services/{serviceFid}/incidents");
-            urlBuilder_.Replace("{serviceFid}", System.Uri.EscapeDataString(ConvertToString(serviceFid, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/licence/check?");
+            if (key != null) urlBuilder_.Append("key=").Append(System.Uri.EscapeDataString(ConvertToString(key, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = new System.Net.Http.HttpClient();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
     
@@ -11190,6 +11641,12 @@ namespace FortifiAPI
                             }
                         }
                         else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Licence Not Valid", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             var result_ = default(Envelope); 
@@ -11220,34 +11677,24 @@ namespace FortifiAPI
             }
         }
     
-        /// <summary>Retrieve incident updates for incident</summary>
-        /// <param name="serviceFid">Service FID to use</param>
-        /// <param name="incidentFid">Incident FID to use</param>
-        /// <returns>Service incidents</returns>
+        /// <summary>Get a list of all reason groups</summary>
+        /// <returns>Reason groups</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response61> UpdatesAsync(string serviceFid, string incidentFid)
+        public System.Threading.Tasks.Task<Response61> Groups2Async(string reasonGroupType)
         {
-            return UpdatesAsync(serviceFid, incidentFid, System.Threading.CancellationToken.None);
+            return Groups2Async(reasonGroupType, System.Threading.CancellationToken.None);
         }
     
-        /// <summary>Retrieve incident updates for incident</summary>
-        /// <param name="serviceFid">Service FID to use</param>
-        /// <param name="incidentFid">Incident FID to use</param>
-        /// <returns>Service incidents</returns>
+        /// <summary>Get a list of all reason groups</summary>
+        /// <returns>Reason groups</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response61> UpdatesAsync(string serviceFid, string incidentFid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response61> Groups2Async(string reasonGroupType, System.Threading.CancellationToken cancellationToken)
         {
-            if (serviceFid == null)
-                throw new System.ArgumentNullException("serviceFid");
-    
-            if (incidentFid == null)
-                throw new System.ArgumentNullException("incidentFid");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/services/{serviceFid}/incidents/{incidentFid}/updates");
-            urlBuilder_.Replace("{serviceFid}", System.Uri.EscapeDataString(ConvertToString(serviceFid, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{incidentFid}", System.Uri.EscapeDataString(ConvertToString(incidentFid, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/reasons/groups?");
+            if (reasonGroupType != null) urlBuilder_.Append("reasonGroupType=").Append(System.Uri.EscapeDataString(ConvertToString(reasonGroupType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -11305,6 +11752,575 @@ namespace FortifiAPI
                         }
             
                         return default(Response61);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Get all the reasons for the reason group</summary>
+        /// <returns>Reason Group retrieved</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response62> Groups3Async(string reasonGroupFid)
+        {
+            return Groups3Async(reasonGroupFid, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Get all the reasons for the reason group</summary>
+        /// <returns>Reason Group retrieved</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response62> Groups3Async(string reasonGroupFid, System.Threading.CancellationToken cancellationToken)
+        {
+            if (reasonGroupFid == null)
+                throw new System.ArgumentNullException("reasonGroupFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/reasons/groups/{reasonGroupFid}");
+            urlBuilder_.Replace("{reasonGroupFid}", System.Uri.EscapeDataString(ConvertToString(reasonGroupFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response62); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response62>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "x-404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("reasonGroupFid not found", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response62);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Create a support ticket</summary>
+        /// <returns>Ticket Information</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response63> Tickets3Async(CreateTicketPayload payload)
+        {
+            return Tickets3Async(payload, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Create a support ticket</summary>
+        /// <returns>Ticket Information</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response63> Tickets3Async(CreateTicketPayload payload, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/tickets");
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response63); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response63>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response63);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Retrieve all services</summary>
+        /// <returns>Service listing</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response64> ServicesAsync()
+        {
+            return ServicesAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Retrieve all services</summary>
+        /// <returns>Service listing</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response64> ServicesAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/services");
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response64); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response64>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response64);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Retrieve incidents for service within timeframe</summary>
+        /// <param name="serviceFid">Service FID to use</param>
+        /// <returns>Service incidents</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response65> IncidentsAsync(string serviceFid, ServiceIncidentsPayload payload)
+        {
+            return IncidentsAsync(serviceFid, payload, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Retrieve incidents for service within timeframe</summary>
+        /// <param name="serviceFid">Service FID to use</param>
+        /// <returns>Service incidents</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response65> IncidentsAsync(string serviceFid, ServiceIncidentsPayload payload, System.Threading.CancellationToken cancellationToken)
+        {
+            if (serviceFid == null)
+                throw new System.ArgumentNullException("serviceFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/services/{serviceFid}/incidents");
+            urlBuilder_.Replace("{serviceFid}", System.Uri.EscapeDataString(ConvertToString(serviceFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response65); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response65>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response65);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Retrieve incident updates for incident</summary>
+        /// <param name="serviceFid">Service FID to use</param>
+        /// <param name="incidentFid">Incident FID to use</param>
+        /// <returns>Service incidents</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response66> UpdatesAsync(string serviceFid, string incidentFid)
+        {
+            return UpdatesAsync(serviceFid, incidentFid, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Retrieve incident updates for incident</summary>
+        /// <param name="serviceFid">Service FID to use</param>
+        /// <param name="incidentFid">Incident FID to use</param>
+        /// <returns>Service incidents</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response66> UpdatesAsync(string serviceFid, string incidentFid, System.Threading.CancellationToken cancellationToken)
+        {
+            if (serviceFid == null)
+                throw new System.ArgumentNullException("serviceFid");
+    
+            if (incidentFid == null)
+                throw new System.ArgumentNullException("incidentFid");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/services/{serviceFid}/incidents/{incidentFid}/updates");
+            urlBuilder_.Replace("{serviceFid}", System.Uri.EscapeDataString(ConvertToString(serviceFid, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{incidentFid}", System.Uri.EscapeDataString(ConvertToString(incidentFid, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response66); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response66>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response66);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Lists all the current gateways</summary>
+        /// <param name="limit">Maximum number of records per page (default: 20)</param>
+        /// <param name="page">Page number (default: 1)</param>
+        /// <returns>List of payment gateways</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response67> GatewaysAsync(int? limit, int? page)
+        {
+            return GatewaysAsync(limit, page, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Lists all the current gateways</summary>
+        /// <param name="limit">Maximum number of records per page (default: 20)</param>
+        /// <param name="page">Page number (default: 1)</param>
+        /// <returns>List of payment gateways</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response67> GatewaysAsync(int? limit, int? page, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/configuration/finance/gateways?");
+            if (limit != null) urlBuilder_.Append("limit=").Append(System.Uri.EscapeDataString(ConvertToString(limit, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            if (page != null) urlBuilder_.Append("page=").Append(System.Uri.EscapeDataString(ConvertToString(page, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response67); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response67>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response67);
                     }
                     finally
                     {
@@ -12062,6 +13078,319 @@ namespace FortifiAPI
         public static Brand FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Brand>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    /// <summary>Payment</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Payment : Fid, System.ComponentModel.INotifyPropertyChanged
+    {
+        private string _direction;
+        private string _currency;
+        private double? _amount;
+        private double? _fee;
+        private string _feeCurrency;
+        private PaymentType? _type;
+        private PaymentStatus? _status;
+        private string _transactionId;
+        private string _statusCode;
+        private string _statusMessage;
+        private string _statementDescriptor;
+        private string _orderFid;
+        private string _invoiceFid;
+        private string _fraudFid;
+        private bool? _processed;
+        private double? _processedDate;
+        private string _subGatewayFid;
+        private string _subGatewayTransactionId;
+        private string _disputeFid;
+    
+        [Newtonsoft.Json.JsonProperty("direction", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Direction
+        {
+            get { return _direction; }
+            set 
+            {
+                if (_direction != value)
+                {
+                    _direction = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Currency
+        {
+            get { return _currency; }
+            set 
+            {
+                if (_currency != value)
+                {
+                    _currency = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Amount
+        {
+            get { return _amount; }
+            set 
+            {
+                if (_amount != value)
+                {
+                    _amount = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("fee", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Fee
+        {
+            get { return _fee; }
+            set 
+            {
+                if (_fee != value)
+                {
+                    _fee = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("feeCurrency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FeeCurrency
+        {
+            get { return _feeCurrency; }
+            set 
+            {
+                if (_feeCurrency != value)
+                {
+                    _feeCurrency = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public PaymentType? Type
+        {
+            get { return _type; }
+            set 
+            {
+                if (_type != value)
+                {
+                    _type = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public PaymentStatus? Status
+        {
+            get { return _status; }
+            set 
+            {
+                if (_status != value)
+                {
+                    _status = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("transactionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TransactionId
+        {
+            get { return _transactionId; }
+            set 
+            {
+                if (_transactionId != value)
+                {
+                    _transactionId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("statusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string StatusCode
+        {
+            get { return _statusCode; }
+            set 
+            {
+                if (_statusCode != value)
+                {
+                    _statusCode = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("statusMessage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string StatusMessage
+        {
+            get { return _statusMessage; }
+            set 
+            {
+                if (_statusMessage != value)
+                {
+                    _statusMessage = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("statementDescriptor", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string StatementDescriptor
+        {
+            get { return _statementDescriptor; }
+            set 
+            {
+                if (_statementDescriptor != value)
+                {
+                    _statementDescriptor = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("orderFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OrderFid
+        {
+            get { return _orderFid; }
+            set 
+            {
+                if (_orderFid != value)
+                {
+                    _orderFid = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("invoiceFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string InvoiceFid
+        {
+            get { return _invoiceFid; }
+            set 
+            {
+                if (_invoiceFid != value)
+                {
+                    _invoiceFid = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("fraudFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FraudFid
+        {
+            get { return _fraudFid; }
+            set 
+            {
+                if (_fraudFid != value)
+                {
+                    _fraudFid = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("processed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Processed
+        {
+            get { return _processed; }
+            set 
+            {
+                if (_processed != value)
+                {
+                    _processed = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("processedDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? ProcessedDate
+        {
+            get { return _processedDate; }
+            set 
+            {
+                if (_processedDate != value)
+                {
+                    _processedDate = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("subGatewayFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SubGatewayFid
+        {
+            get { return _subGatewayFid; }
+            set 
+            {
+                if (_subGatewayFid != value)
+                {
+                    _subGatewayFid = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("subGatewayTransactionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SubGatewayTransactionId
+        {
+            get { return _subGatewayTransactionId; }
+            set 
+            {
+                if (_subGatewayTransactionId != value)
+                {
+                    _subGatewayTransactionId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("disputeFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisputeFid
+        {
+            get { return _disputeFid; }
+            set 
+            {
+                if (_disputeFid != value)
+                {
+                    _disputeFid = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Payment FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Payment>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -13068,7 +14397,8 @@ namespace FortifiAPI
         private System.DateTime? _trialEndDate;
         private string _cycleTerm;
         private string _cycleExact;
-        private string _cycleType;
+        private CycleTermType? _cycleType;
+        private string _cycle;
     
         [Newtonsoft.Json.JsonProperty("purchaseFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PurchaseFid
@@ -13291,7 +14621,8 @@ namespace FortifiAPI
         }
     
         [Newtonsoft.Json.JsonProperty("cycleType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string CycleType
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public CycleTermType? CycleType
         {
             get { return _cycleType; }
             set 
@@ -13299,6 +14630,21 @@ namespace FortifiAPI
                 if (_cycleType != value)
                 {
                     _cycleType = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        /// <summary>Interval in ISO 8601 standard</summary>
+        [Newtonsoft.Json.JsonProperty("cycle", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Cycle
+        {
+            get { return _cycle; }
+            set 
+            {
+                if (_cycle != value)
+                {
+                    _cycle = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -13424,6 +14770,7 @@ namespace FortifiAPI
             }
         }
     
+        /// <summary>Interval in ISO 8601 standard</summary>
         [Newtonsoft.Json.JsonProperty("cycle", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Cycle
         {
@@ -13527,6 +14874,8 @@ namespace FortifiAPI
         private string _cancelReason;
         private string _currency;
         private string _cycle;
+        private string _priceFid;
+        private string _offerFid;
         private System.DateTime? _dateCancelled;
         private System.DateTime? _dateCreated;
         private System.DateTime? _dateInactive;
@@ -13662,6 +15011,7 @@ namespace FortifiAPI
             }
         }
     
+        /// <summary>Interval in ISO 8601 standard</summary>
         [Newtonsoft.Json.JsonProperty("cycle", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Cycle
         {
@@ -13671,6 +15021,34 @@ namespace FortifiAPI
                 if (_cycle != value)
                 {
                     _cycle = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("priceFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PriceFid
+        {
+            get { return _priceFid; }
+            set 
+            {
+                if (_priceFid != value)
+                {
+                    _priceFid = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("offerFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OfferFid
+        {
+            get { return _offerFid; }
+            set 
+            {
+                if (_offerFid != value)
+                {
+                    _offerFid = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -14176,6 +15554,107 @@ namespace FortifiAPI
         public static Subscription FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Subscription>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    /// <summary>Response from calculating a refund on a subscription</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class CalculateSubscriptionRefund : System.ComponentModel.INotifyPropertyChanged
+    {
+        private double? _amountWithTax;
+        private double? _amountWithoutTax;
+        private double? _tax;
+        private double? _terminationFee;
+        private double? _terminationFeeWithTax;
+    
+        [Newtonsoft.Json.JsonProperty("amountWithTax", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? AmountWithTax
+        {
+            get { return _amountWithTax; }
+            set 
+            {
+                if (_amountWithTax != value)
+                {
+                    _amountWithTax = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("amountWithoutTax", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? AmountWithoutTax
+        {
+            get { return _amountWithoutTax; }
+            set 
+            {
+                if (_amountWithoutTax != value)
+                {
+                    _amountWithoutTax = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("tax", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Tax
+        {
+            get { return _tax; }
+            set 
+            {
+                if (_tax != value)
+                {
+                    _tax = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("terminationFee", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TerminationFee
+        {
+            get { return _terminationFee; }
+            set 
+            {
+                if (_terminationFee != value)
+                {
+                    _terminationFee = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("terminationFeeWithTax", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TerminationFeeWithTax
+        {
+            get { return _terminationFeeWithTax; }
+            set 
+            {
+                if (_terminationFeeWithTax != value)
+                {
+                    _terminationFeeWithTax = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static CalculateSubscriptionRefund FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CalculateSubscriptionRefund>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -15362,9 +16841,10 @@ namespace FortifiAPI
         private string _currency;
         private string _price;
         private string _setupFee;
-        private double? _cycleType;
+        private CycleTermType? _cycleType;
         private double? _cycleTerm;
         private string _cycleExact;
+        private string _cycle;
     
         [Newtonsoft.Json.JsonProperty("productFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ProductFid
@@ -15423,7 +16903,8 @@ namespace FortifiAPI
         }
     
         [Newtonsoft.Json.JsonProperty("cycleType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? CycleType
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public CycleTermType? CycleType
         {
             get { return _cycleType; }
             set 
@@ -15464,6 +16945,21 @@ namespace FortifiAPI
             }
         }
     
+        /// <summary>Interval in ISO 8601 standard</summary>
+        [Newtonsoft.Json.JsonProperty("cycle", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Cycle
+        {
+            get { return _cycle; }
+            set 
+            {
+                if (_cycle != value)
+                {
+                    _cycle = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -15472,6 +16968,339 @@ namespace FortifiAPI
         public static ProductPrice FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ProductPrice>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    /// <summary>Result of a fraud scan</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class FraudScan : System.ComponentModel.INotifyPropertyChanged
+    {
+        private string _service;
+        private string _score;
+        private string _message;
+        private string _requestId;
+        private string _recommendation;
+        private System.Collections.ObjectModel.ObservableCollection<FraudScanMetaData> _metaDataItems;
+    
+        [Newtonsoft.Json.JsonProperty("service", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Service
+        {
+            get { return _service; }
+            set 
+            {
+                if (_service != value)
+                {
+                    _service = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("score", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Score
+        {
+            get { return _score; }
+            set 
+            {
+                if (_score != value)
+                {
+                    _score = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Message
+        {
+            get { return _message; }
+            set 
+            {
+                if (_message != value)
+                {
+                    _message = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("requestId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RequestId
+        {
+            get { return _requestId; }
+            set 
+            {
+                if (_requestId != value)
+                {
+                    _requestId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("recommendation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Recommendation
+        {
+            get { return _recommendation; }
+            set 
+            {
+                if (_recommendation != value)
+                {
+                    _recommendation = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("metaDataItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<FraudScanMetaData> MetaDataItems
+        {
+            get { return _metaDataItems; }
+            set 
+            {
+                if (_metaDataItems != value)
+                {
+                    _metaDataItems = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static FraudScan FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FraudScan>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    /// <summary>Individual fraud scan metadata item</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class FraudScanMetaData : System.ComponentModel.INotifyPropertyChanged
+    {
+        private string _key;
+        private string _value;
+    
+        [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Key
+        {
+            get { return _key; }
+            set 
+            {
+                if (_key != value)
+                {
+                    _key = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Value
+        {
+            get { return _value; }
+            set 
+            {
+                if (_value != value)
+                {
+                    _value = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static FraudScanMetaData FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<FraudScanMetaData>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    /// <summary>Generic Response</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class CalculatedSubscriptionModification : System.ComponentModel.INotifyPropertyChanged
+    {
+        private double? _nextRenewalAmount;
+        private double? _nextRenewalDiscount;
+        private double? _nextRenewalTax;
+        private double? _nextRenewalTotal;
+        private double? _setupAmount;
+        private double? _setupDiscount;
+        private double? _chargeAmount;
+        private double? _chargeTax;
+        private double? _chargeTotal;
+    
+        [Newtonsoft.Json.JsonProperty("nextRenewalAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? NextRenewalAmount
+        {
+            get { return _nextRenewalAmount; }
+            set 
+            {
+                if (_nextRenewalAmount != value)
+                {
+                    _nextRenewalAmount = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("nextRenewalDiscount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? NextRenewalDiscount
+        {
+            get { return _nextRenewalDiscount; }
+            set 
+            {
+                if (_nextRenewalDiscount != value)
+                {
+                    _nextRenewalDiscount = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("nextRenewalTax", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? NextRenewalTax
+        {
+            get { return _nextRenewalTax; }
+            set 
+            {
+                if (_nextRenewalTax != value)
+                {
+                    _nextRenewalTax = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("nextRenewalTotal", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? NextRenewalTotal
+        {
+            get { return _nextRenewalTotal; }
+            set 
+            {
+                if (_nextRenewalTotal != value)
+                {
+                    _nextRenewalTotal = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("setupAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? SetupAmount
+        {
+            get { return _setupAmount; }
+            set 
+            {
+                if (_setupAmount != value)
+                {
+                    _setupAmount = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("setupDiscount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? SetupDiscount
+        {
+            get { return _setupDiscount; }
+            set 
+            {
+                if (_setupDiscount != value)
+                {
+                    _setupDiscount = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("chargeAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? ChargeAmount
+        {
+            get { return _chargeAmount; }
+            set 
+            {
+                if (_chargeAmount != value)
+                {
+                    _chargeAmount = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("chargeTax", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? ChargeTax
+        {
+            get { return _chargeTax; }
+            set 
+            {
+                if (_chargeTax != value)
+                {
+                    _chargeTax = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("chargeTotal", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? ChargeTotal
+        {
+            get { return _chargeTotal; }
+            set 
+            {
+                if (_chargeTotal != value)
+                {
+                    _chargeTotal = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static CalculatedSubscriptionModification FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CalculatedSubscriptionModification>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -15496,6 +17325,7 @@ namespace FortifiAPI
         private string _couponCode;
         private double? _amount;
         private double? _setupAmount;
+        private double? _setupDiscountAmount;
         private double? _taxAmount;
         private double? _totalAmount;
         private string _currency;
@@ -15608,6 +17438,20 @@ namespace FortifiAPI
                 if (_setupAmount != value)
                 {
                     _setupAmount = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("setupDiscountAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? SetupDiscountAmount
+        {
+            get { return _setupDiscountAmount; }
+            set 
+            {
+                if (_setupDiscountAmount != value)
+                {
+                    _setupDiscountAmount = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -15978,6 +17822,18 @@ namespace FortifiAPI
         private string _productFid;
         private long? _quantity;
         private System.DateTime? _renewalDate;
+        private string _purchaseFid;
+        private string _currency;
+        private double? _discountAmount;
+        private double? _setupFee;
+        private double? _setupDiscountAmount;
+        private double? _taxAmount;
+        private double? _totalAmount;
+        private double? _cycleType;
+        private double? _cycleTerm;
+        private string _cycleExact;
+        private string _cycle;
+        private string _parentFid;
     
         [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? Price
@@ -16059,6 +17915,175 @@ namespace FortifiAPI
                 if (_renewalDate != value)
                 {
                     _renewalDate = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("purchaseFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PurchaseFid
+        {
+            get { return _purchaseFid; }
+            set 
+            {
+                if (_purchaseFid != value)
+                {
+                    _purchaseFid = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Currency
+        {
+            get { return _currency; }
+            set 
+            {
+                if (_currency != value)
+                {
+                    _currency = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("discountAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? DiscountAmount
+        {
+            get { return _discountAmount; }
+            set 
+            {
+                if (_discountAmount != value)
+                {
+                    _discountAmount = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("setupFee", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? SetupFee
+        {
+            get { return _setupFee; }
+            set 
+            {
+                if (_setupFee != value)
+                {
+                    _setupFee = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("setupDiscountAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? SetupDiscountAmount
+        {
+            get { return _setupDiscountAmount; }
+            set 
+            {
+                if (_setupDiscountAmount != value)
+                {
+                    _setupDiscountAmount = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("taxAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TaxAmount
+        {
+            get { return _taxAmount; }
+            set 
+            {
+                if (_taxAmount != value)
+                {
+                    _taxAmount = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("totalAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TotalAmount
+        {
+            get { return _totalAmount; }
+            set 
+            {
+                if (_totalAmount != value)
+                {
+                    _totalAmount = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("cycleType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? CycleType
+        {
+            get { return _cycleType; }
+            set 
+            {
+                if (_cycleType != value)
+                {
+                    _cycleType = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("cycleTerm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? CycleTerm
+        {
+            get { return _cycleTerm; }
+            set 
+            {
+                if (_cycleTerm != value)
+                {
+                    _cycleTerm = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("cycleExact", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CycleExact
+        {
+            get { return _cycleExact; }
+            set 
+            {
+                if (_cycleExact != value)
+                {
+                    _cycleExact = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        /// <summary>Interval in ISO 8601 standard</summary>
+        [Newtonsoft.Json.JsonProperty("cycle", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Cycle
+        {
+            get { return _cycle; }
+            set 
+            {
+                if (_cycle != value)
+                {
+                    _cycle = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("parentFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ParentFid
+        {
+            get { return _parentFid; }
+            set 
+            {
+                if (_parentFid != value)
+                {
+                    _parentFid = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -16842,6 +18867,163 @@ namespace FortifiAPI
     
     /// <summary>Generic Response</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class PaymentGateways : Pagination, System.ComponentModel.INotifyPropertyChanged
+    {
+        private System.Collections.ObjectModel.ObservableCollection<PaymentGateway> _gateways;
+    
+        [Newtonsoft.Json.JsonProperty("gateways", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<PaymentGateway> Gateways
+        {
+            get { return _gateways; }
+            set 
+            {
+                if (_gateways != value)
+                {
+                    _gateways = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static PaymentGateways FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PaymentGateways>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    /// <summary>Generic Response</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class PaymentGateway : Entity, System.ComponentModel.INotifyPropertyChanged
+    {
+        private string _externalId;
+        private bool? _enabled;
+        private System.Collections.ObjectModel.ObservableCollection<string> _brands;
+        private System.Collections.ObjectModel.ObservableCollection<string> _currencies;
+        private System.Collections.ObjectModel.ObservableCollection<string> _cardTypes;
+        private string _provider;
+    
+        [Newtonsoft.Json.JsonProperty("externalId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ExternalId
+        {
+            get { return _externalId; }
+            set 
+            {
+                if (_externalId != value)
+                {
+                    _externalId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("enabled", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Enabled
+        {
+            get { return _enabled; }
+            set 
+            {
+                if (_enabled != value)
+                {
+                    _enabled = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("brands", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<string> Brands
+        {
+            get { return _brands; }
+            set 
+            {
+                if (_brands != value)
+                {
+                    _brands = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("currencies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<string> Currencies
+        {
+            get { return _currencies; }
+            set 
+            {
+                if (_currencies != value)
+                {
+                    _currencies = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("cardTypes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<string> CardTypes
+        {
+            get { return _cardTypes; }
+            set 
+            {
+                if (_cardTypes != value)
+                {
+                    _cardTypes = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("provider", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Provider
+        {
+            get { return _provider; }
+            set 
+            {
+                if (_provider != value)
+                {
+                    _provider = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static PaymentGateway FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PaymentGateway>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    /// <summary>Generic Response</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class ProductOffers : System.ComponentModel.INotifyPropertyChanged
     {
         private System.Collections.ObjectModel.ObservableCollection<ProductOffer> _offers;
@@ -16895,6 +19077,7 @@ namespace FortifiAPI
         private DiscountType? _setupDiscountType;
         private int? _term;
         private CycleTermType? _termType;
+        private string _period;
         private bool? _restrictive;
     
         [Newtonsoft.Json.JsonProperty("couponCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -17036,6 +19219,21 @@ namespace FortifiAPI
                 if (_termType != value)
                 {
                     _termType = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        /// <summary>Interval in ISO 8601 standard</summary>
+        [Newtonsoft.Json.JsonProperty("period", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Period
+        {
+            get { return _period; }
+            set 
+            {
+                if (_period != value)
+                {
+                    _period = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -18198,6 +20396,103 @@ namespace FortifiAPI
     
     }
     
+    /// <summary>List of chat sessions</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ChatSessions : Pagination, System.ComponentModel.INotifyPropertyChanged
+    {
+        private System.Collections.ObjectModel.ObservableCollection<ChatSession> _chatSessions1;
+    
+        [Newtonsoft.Json.JsonProperty("chatSessions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<ChatSession> ChatSessions1
+        {
+            get { return _chatSessions1; }
+            set 
+            {
+                if (_chatSessions1 != value)
+                {
+                    _chatSessions1 = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static ChatSessions FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ChatSessions>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    /// <summary>Chat session</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ChatSession : Entity, System.ComponentModel.INotifyPropertyChanged
+    {
+        private double? _timeStarted;
+        private double? _timeEnded;
+    
+        [Newtonsoft.Json.JsonProperty("timeStarted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TimeStarted
+        {
+            get { return _timeStarted; }
+            set 
+            {
+                if (_timeStarted != value)
+                {
+                    _timeStarted = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("timeEnded", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? TimeEnded
+        {
+            get { return _timeEnded; }
+            set 
+            {
+                if (_timeEnded != value)
+                {
+                    _timeEnded = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static ChatSession FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ChatSession>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
     /// <summary>Incident updates</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class IncidentUpdates : System.ComponentModel.INotifyPropertyChanged
@@ -18885,10 +21180,99 @@ namespace FortifiAPI
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class CalculateRefundPayload : System.ComponentModel.INotifyPropertyChanged
+    {
+        private SubscriptionRefundType _subscriptionRefundType;
+        private double? _refundFromDate;
+        private bool? _includeDetails;
+        private bool? _withTerminationFee;
+    
+        [Newtonsoft.Json.JsonProperty("subscriptionRefundType", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public SubscriptionRefundType SubscriptionRefundType
+        {
+            get { return _subscriptionRefundType; }
+            set 
+            {
+                if (_subscriptionRefundType != value)
+                {
+                    _subscriptionRefundType = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        /// <summary>Timestamp of when to calculate the refund from. Rounded down to the start of the day. Default to start of tomorrow</summary>
+        [Newtonsoft.Json.JsonProperty("refundFromDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? RefundFromDate
+        {
+            get { return _refundFromDate; }
+            set 
+            {
+                if (_refundFromDate != value)
+                {
+                    _refundFromDate = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("includeDetails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IncludeDetails
+        {
+            get { return _includeDetails; }
+            set 
+            {
+                if (_includeDetails != value)
+                {
+                    _includeDetails = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("withTerminationFee", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? WithTerminationFee
+        {
+            get { return _withTerminationFee; }
+            set 
+            {
+                if (_withTerminationFee != value)
+                {
+                    _withTerminationFee = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static CalculateRefundPayload FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CalculateRefundPayload>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class SubscriptionCancelPayload : System.ComponentModel.INotifyPropertyChanged
     {
         private string _reasonFid;
         private SubscriptionRefundType _subscriptionRefundType;
+        private bool? _cancelAtNextRenewal;
     
         /// <summary>Reason FID</summary>
         [Newtonsoft.Json.JsonProperty("reasonFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -18916,6 +21300,20 @@ namespace FortifiAPI
                 if (_subscriptionRefundType != value)
                 {
                     _subscriptionRefundType = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("cancelAtNextRenewal", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CancelAtNextRenewal
+        {
+            get { return _cancelAtNextRenewal; }
+            set 
+            {
+                if (_cancelAtNextRenewal != value)
+                {
+                    _cancelAtNextRenewal = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -23692,10 +26090,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response19 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Fid _data;
+        private ChatSessions _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Fid Data
+        public ChatSessions Data
         {
             get { return _data; }
             set 
@@ -23732,10 +26130,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response20 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private BoolMessage _data;
+        private Payment _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public BoolMessage Data
+        public Payment Data
         {
             get { return _data; }
             set 
@@ -23772,10 +26170,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response21 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Tickets _data;
+        private Fid _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Tickets Data
+        public Fid Data
         {
             get { return _data; }
             set 
@@ -23812,10 +26210,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response22 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private ConfigItems _data;
+        private BoolMessage _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ConfigItems Data
+        public BoolMessage Data
         {
             get { return _data; }
             set 
@@ -23852,10 +26250,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response23 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private ConfigItem _data;
+        private Tickets _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ConfigItem Data
+        public Tickets Data
         {
             get { return _data; }
             set 
@@ -23892,10 +26290,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response24 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private PropertyValue _data;
+        private ConfigItems _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PropertyValue Data
+        public ConfigItems Data
         {
             get { return _data; }
             set 
@@ -23932,10 +26330,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response25 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private PaymentAccounts _data;
+        private ConfigItem _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PaymentAccounts Data
+        public ConfigItem Data
         {
             get { return _data; }
             set 
@@ -23972,10 +26370,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response26 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private PaypalInit _data;
+        private PropertyValue _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PaypalInit Data
+        public PropertyValue Data
         {
             get { return _data; }
             set 
@@ -24012,10 +26410,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response27 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private InvoiceCreditNote _data;
+        private PaymentAccounts _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public InvoiceCreditNote Data
+        public PaymentAccounts Data
         {
             get { return _data; }
             set 
@@ -24052,10 +26450,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response28 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Subscriptions _data;
+        private PaypalInit _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Subscriptions Data
+        public PaypalInit Data
         {
             get { return _data; }
             set 
@@ -24092,10 +26490,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response29 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Subscription _data;
+        private InvoiceCreditNote _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Subscription Data
+        public InvoiceCreditNote Data
         {
             get { return _data; }
             set 
@@ -24132,10 +26530,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response30 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Fid _data;
+        private Subscriptions _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Fid Data
+        public Subscriptions Data
         {
             get { return _data; }
             set 
@@ -24172,10 +26570,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response31 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Order _data;
+        private Subscription _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Order Data
+        public Subscription Data
         {
             get { return _data; }
             set 
@@ -24252,10 +26650,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response33 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Fid _data;
+        private CalculatedSubscriptionModification _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Fid Data
+        public CalculatedSubscriptionModification Data
         {
             get { return _data; }
             set 
@@ -24292,10 +26690,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response34 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Subscription _data;
+        private CalculateSubscriptionRefund _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Subscription Data
+        public CalculateSubscriptionRefund Data
         {
             get { return _data; }
             set 
@@ -24332,10 +26730,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response35 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private BoolMessage _data;
+        private Order _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public BoolMessage Data
+        public Order Data
         {
             get { return _data; }
             set 
@@ -24372,10 +26770,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response36 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private BoolMessage _data;
+        private Fid _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public BoolMessage Data
+        public Fid Data
         {
             get { return _data; }
             set 
@@ -24412,10 +26810,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response37 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Products _data;
+        private Fid _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Products Data
+        public Fid Data
         {
             get { return _data; }
             set 
@@ -24452,10 +26850,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response38 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private ProductPrices _data;
+        private Subscription _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProductPrices Data
+        public Subscription Data
         {
             get { return _data; }
             set 
@@ -24492,10 +26890,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response39 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private ProductGroups _data;
+        private BoolMessage _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProductGroups Data
+        public BoolMessage Data
         {
             get { return _data; }
             set 
@@ -24532,10 +26930,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response40 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Products _data;
+        private BoolMessage _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Products Data
+        public BoolMessage Data
         {
             get { return _data; }
             set 
@@ -24572,10 +26970,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response41 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Fid _data;
+        private Products _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Fid Data
+        public Products Data
         {
             get { return _data; }
             set 
@@ -24612,10 +27010,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response42 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Order _data;
+        private ProductPrices _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Order Data
+        public ProductPrices Data
         {
             get { return _data; }
             set 
@@ -24652,10 +27050,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response43 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private OrderVerification _data;
+        private ProductGroups _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public OrderVerification Data
+        public ProductGroups Data
         {
             get { return _data; }
             set 
@@ -24692,10 +27090,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response44 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private BoolMessage _data;
+        private Products _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public BoolMessage Data
+        public Products Data
         {
             get { return _data; }
             set 
@@ -24732,10 +27130,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response45 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private OrderConfirmation _data;
+        private Fid _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public OrderConfirmation Data
+        public Fid Data
         {
             get { return _data; }
             set 
@@ -24772,10 +27170,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response46 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private OrderConfirmation _data;
+        private Order _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public OrderConfirmation Data
+        public Order Data
         {
             get { return _data; }
             set 
@@ -24812,10 +27210,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response47 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private OrderConfirmation _data;
+        private OrderVerification _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public OrderConfirmation Data
+        public OrderVerification Data
         {
             get { return _data; }
             set 
@@ -24852,10 +27250,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response48 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private OrderConfirmation _data;
+        private BoolMessage _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public OrderConfirmation Data
+        public BoolMessage Data
         {
             get { return _data; }
             set 
@@ -24892,10 +27290,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response49 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private OrderProducts _data;
+        private OrderConfirmation _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public OrderProducts Data
+        public OrderConfirmation Data
         {
             get { return _data; }
             set 
@@ -24932,10 +27330,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response50 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private OrderAddProducts _data;
+        private OrderConfirmation _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public OrderAddProducts Data
+        public OrderConfirmation Data
         {
             get { return _data; }
             set 
@@ -24972,10 +27370,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response51 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private OrderAddProducts _data;
+        private OrderConfirmation _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public OrderAddProducts Data
+        public OrderConfirmation Data
         {
             get { return _data; }
             set 
@@ -25012,10 +27410,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response52 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Fid _data;
+        private OrderConfirmation _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Fid Data
+        public OrderConfirmation Data
         {
             get { return _data; }
             set 
@@ -25052,10 +27450,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response53 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Entity _data;
+        private FraudScan _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Entity Data
+        public FraudScan Data
         {
             get { return _data; }
             set 
@@ -25092,10 +27490,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response54 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private ProductOffers _data;
+        private OrderProducts _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProductOffers Data
+        public OrderProducts Data
         {
             get { return _data; }
             set 
@@ -25132,10 +27530,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response55 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Licence _data;
+        private OrderAddProducts _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Licence Data
+        public OrderAddProducts Data
         {
             get { return _data; }
             set 
@@ -25172,10 +27570,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response56 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private ReasonGroups _data;
+        private OrderAddProducts _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ReasonGroups Data
+        public OrderAddProducts Data
         {
             get { return _data; }
             set 
@@ -25212,10 +27610,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response57 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Reasons _data;
+        private Fid _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Reasons Data
+        public Fid Data
         {
             get { return _data; }
             set 
@@ -25252,10 +27650,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response58 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Ticket _data;
+        private Entity _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Ticket Data
+        public Entity Data
         {
             get { return _data; }
             set 
@@ -25292,10 +27690,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response59 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private Services _data;
+        private ProductOffers _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Services Data
+        public ProductOffers Data
         {
             get { return _data; }
             set 
@@ -25332,10 +27730,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response60 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private ServiceIncidents _data;
+        private Licence _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ServiceIncidents Data
+        public Licence Data
         {
             get { return _data; }
             set 
@@ -25372,10 +27770,10 @@ namespace FortifiAPI
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class Response61 : Envelope, System.ComponentModel.INotifyPropertyChanged
     {
-        private IncidentUpdates _data;
+        private ReasonGroups _data;
     
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public IncidentUpdates Data
+        public ReasonGroups Data
         {
             get { return _data; }
             set 
@@ -25406,6 +27804,292 @@ namespace FortifiAPI
             if (handler != null) 
                 handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Response62 : Envelope, System.ComponentModel.INotifyPropertyChanged
+    {
+        private Reasons _data;
+    
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Reasons Data
+        {
+            get { return _data; }
+            set 
+            {
+                if (_data != value)
+                {
+                    _data = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Response62 FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Response62>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Response63 : Envelope, System.ComponentModel.INotifyPropertyChanged
+    {
+        private Ticket _data;
+    
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Ticket Data
+        {
+            get { return _data; }
+            set 
+            {
+                if (_data != value)
+                {
+                    _data = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Response63 FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Response63>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Response64 : Envelope, System.ComponentModel.INotifyPropertyChanged
+    {
+        private Services _data;
+    
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Services Data
+        {
+            get { return _data; }
+            set 
+            {
+                if (_data != value)
+                {
+                    _data = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Response64 FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Response64>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Response65 : Envelope, System.ComponentModel.INotifyPropertyChanged
+    {
+        private ServiceIncidents _data;
+    
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ServiceIncidents Data
+        {
+            get { return _data; }
+            set 
+            {
+                if (_data != value)
+                {
+                    _data = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Response65 FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Response65>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Response66 : Envelope, System.ComponentModel.INotifyPropertyChanged
+    {
+        private IncidentUpdates _data;
+    
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public IncidentUpdates Data
+        {
+            get { return _data; }
+            set 
+            {
+                if (_data != value)
+                {
+                    _data = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Response66 FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Response66>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Response67 : Envelope, System.ComponentModel.INotifyPropertyChanged
+    {
+        private PaymentGateways _data;
+    
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public PaymentGateways Data
+        {
+            get { return _data; }
+            set 
+            {
+                if (_data != value)
+                {
+                    _data = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Response67 FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Response67>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum PaymentType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "affiliate")]
+        Affiliate = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "invoice")]
+        Invoice = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "order")]
+        Order = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "unknown")]
+        Unknown = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "preauth")]
+        Preauth = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum PaymentStatus
+    {
+        [System.Runtime.Serialization.EnumMember(Value = "pending")]
+        Pending = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "paid")]
+        Paid = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "refund-pending")]
+        RefundPending = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "refunded")]
+        Refunded = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "partially-refunded")]
+        PartiallyRefunded = 4,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "chargeback")]
+        Chargeback = 5,
+    
+        [System.Runtime.Serialization.EnumMember(Value = "chargeback-pending")]
+        ChargebackPending = 6,
     
     }
     
