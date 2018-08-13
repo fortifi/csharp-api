@@ -2,3 +2,5 @@
 swagger.yaml
 FortifiAPI/obj/*
 FortifiAPI_Example/obj/*
+FortifiAPI/bin/*
+FortifiAPI_Example/bin/*
