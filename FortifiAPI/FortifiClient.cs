@@ -3958,7 +3958,7 @@ namespace FortifiAPI
         /// <param name="description">Notes</param>
         /// <returns>Chargeback Actioned</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response22> ChargebacksAsync(string customerFid, string chargebackFid, string reasonCode, string caseNumber, State2 state, bool refunded, string description)
+        public System.Threading.Tasks.Task<Response22> ChargebacksAsync(string customerFid, string chargebackFid, string reasonCode, string caseNumber, State state, bool refunded, string description)
         {
             return ChargebacksAsync(customerFid, chargebackFid, reasonCode, caseNumber, state, refunded, description, System.Threading.CancellationToken.None);
         }
@@ -3974,7 +3974,7 @@ namespace FortifiAPI
         /// <returns>Chargeback Actioned</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response22> ChargebacksAsync(string customerFid, string chargebackFid, string reasonCode, string caseNumber, State2 state, bool refunded, string description, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response22> ChargebacksAsync(string customerFid, string chargebackFid, string reasonCode, string caseNumber, State state, bool refunded, string description, System.Threading.CancellationToken cancellationToken)
         {
             if (customerFid == null)
                 throw new System.ArgumentNullException("customerFid");
@@ -12048,9 +12048,9 @@ namespace FortifiAPI
         /// <param name="serviceFid">Service FID to use</param>
         /// <returns>Service incidents</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Response65> IncidentsAsync(string serviceFid, ServiceIncidentsPayload payload)
+        public System.Threading.Tasks.Task<Response65> IncidentsAsync(string serviceFid, System.DateTime? startDate, System.DateTime? endDate)
         {
-            return IncidentsAsync(serviceFid, payload, System.Threading.CancellationToken.None);
+            return IncidentsAsync(serviceFid, startDate, endDate, System.Threading.CancellationToken.None);
         }
     
         /// <summary>Retrieve incidents for service within timeframe</summary>
@@ -12058,23 +12058,23 @@ namespace FortifiAPI
         /// <returns>Service incidents</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<Response65> IncidentsAsync(string serviceFid, ServiceIncidentsPayload payload, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Response65> IncidentsAsync(string serviceFid, System.DateTime? startDate, System.DateTime? endDate, System.Threading.CancellationToken cancellationToken)
         {
             if (serviceFid == null)
                 throw new System.ArgumentNullException("serviceFid");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/services/{serviceFid}/incidents");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/services/{serviceFid}/incidents?");
             urlBuilder_.Replace("{serviceFid}", System.Uri.EscapeDataString(ConvertToString(serviceFid, System.Globalization.CultureInfo.InvariantCulture)));
+            if (startDate != null) urlBuilder_.Append("startDate=").Append(System.Uri.EscapeDataString(startDate.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            if (endDate != null) urlBuilder_.Append("endDate=").Append(System.Uri.EscapeDataString(endDate.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = new System.Net.Http.HttpClient();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(payload, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
     
@@ -12321,6 +12321,113 @@ namespace FortifiAPI
                         }
             
                         return default(Response67);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <summary>Verify a user</summary>
+        /// <param name="verifyKey">Verify key found in ?fortifiverify=VERIFYKEY</param>
+        /// <param name="remoteIp">IP of the user connecting</param>
+        /// <returns>List of payment gateways</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<Response68> VerifyUserAsync(string verifyKey, string remoteIp)
+        {
+            return VerifyUserAsync(verifyKey, remoteIp, System.Threading.CancellationToken.None);
+        }
+    
+        /// <summary>Verify a user</summary>
+        /// <param name="verifyKey">Verify key found in ?fortifiverify=VERIFYKEY</param>
+        /// <param name="remoteIp">IP of the user connecting</param>
+        /// <returns>List of payment gateways</returns>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<Response68> VerifyUserAsync(string verifyKey, string remoteIp, System.Threading.CancellationToken cancellationToken)
+        {
+            if (verifyKey == null)
+                throw new System.ArgumentNullException("verifyKey");
+    
+            if (remoteIp == null)
+                throw new System.ArgumentNullException("remoteIp");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/integrations/verifyUser?");
+            urlBuilder_.Append("verifyKey=").Append(System.Uri.EscapeDataString(ConvertToString(verifyKey, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("remoteIp=").Append(System.Uri.EscapeDataString(ConvertToString(remoteIp, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Response68); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Response68>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "x-403") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("Unable to verify user", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(Envelope); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<Envelope>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<Envelope>("Error", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+            
+                        return default(Response68);
                     }
                     finally
                     {
@@ -19077,6 +19184,7 @@ namespace FortifiAPI
         private DiscountType? _setupDiscountType;
         private int? _term;
         private CycleTermType? _termType;
+        private string _cycle;
         private string _period;
         private bool? _restrictive;
     
@@ -19219,6 +19327,21 @@ namespace FortifiAPI
                 if (_termType != value)
                 {
                     _termType = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        /// <summary>Interval in ISO 8601 standard</summary>
+        [Newtonsoft.Json.JsonProperty("cycle", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Cycle
+        {
+            get { return _cycle; }
+            set 
+            {
+                if (_cycle != value)
+                {
+                    _cycle = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -20912,6 +21035,93 @@ namespace FortifiAPI
     
     }
     
+    /// <summary>Information about the user attempting to integrate</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class IntegrationUser : System.ComponentModel.INotifyPropertyChanged
+    {
+        private string _displayName;
+        private string _userFid;
+        private string _employeeFid;
+        private System.Collections.ObjectModel.ObservableCollection<string> _roles;
+    
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayName
+        {
+            get { return _displayName; }
+            set 
+            {
+                if (_displayName != value)
+                {
+                    _displayName = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("userFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string UserFid
+        {
+            get { return _userFid; }
+            set 
+            {
+                if (_userFid != value)
+                {
+                    _userFid = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("employeeFid", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EmployeeFid
+        {
+            get { return _employeeFid; }
+            set 
+            {
+                if (_employeeFid != value)
+                {
+                    _employeeFid = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        /// <summary>Role Aliases</summary>
+        [Newtonsoft.Json.JsonProperty("roles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<string> Roles
+        {
+            get { return _roles; }
+            set 
+            {
+                if (_roles != value)
+                {
+                    _roles = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static IntegrationUser FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<IntegrationUser>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
     /// <summary>Service credentials used to verify ownership of a user account</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class ServiceAccountCredentialsPayload : System.ComponentModel.INotifyPropertyChanged
@@ -21790,6 +22000,7 @@ namespace FortifiAPI
         private string _sid3;
         private System.Collections.ObjectModel.ObservableCollection<KeyValuePayload> _metaData;
         private System.DateTime? _time;
+        private bool? _useExistingDeviceIfAvailable;
     
         /// <summary>Your unique transaction ID for this event e.g. Order ID</summary>
         [Newtonsoft.Json.JsonProperty("transactionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -22093,6 +22304,21 @@ namespace FortifiAPI
             }
         }
     
+        /// <summary>If an existing device exists for the visitor, prefer that over the user agent sent in this payload</summary>
+        [Newtonsoft.Json.JsonProperty("useExistingDeviceIfAvailable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? UseExistingDeviceIfAvailable
+        {
+            get { return _useExistingDeviceIfAvailable; }
+            set 
+            {
+                if (_useExistingDeviceIfAvailable != value)
+                {
+                    _useExistingDeviceIfAvailable = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
@@ -22349,6 +22575,7 @@ namespace FortifiAPI
         private CustomerAccountStatus? _accountStatus;
         private CustomerLifecycle? _lifecycle;
         private CustomerSubscriptionType? _subscriptionType;
+        private string _language;
     
         /// <summary>Visitor ID of the visitor</summary>
         [Newtonsoft.Json.JsonProperty("visitorId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -22571,6 +22798,21 @@ namespace FortifiAPI
                 if (_subscriptionType != value)
                 {
                     _subscriptionType = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        /// <summary>Language</summary>
+        [Newtonsoft.Json.JsonProperty("language", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Language
+        {
+            get { return _language; }
+            set 
+            {
+                if (_language != value)
+                {
+                    _language = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -24796,61 +25038,6 @@ namespace FortifiAPI
     
     }
     
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ServiceIncidentsPayload : System.ComponentModel.INotifyPropertyChanged
-    {
-        private System.DateTime? _startDate;
-        private System.DateTime? _endDate;
-    
-        [Newtonsoft.Json.JsonProperty("startDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? StartDate
-        {
-            get { return _startDate; }
-            set 
-            {
-                if (_startDate != value)
-                {
-                    _startDate = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("endDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? EndDate
-        {
-            get { return _endDate; }
-            set 
-            {
-                if (_endDate != value)
-                {
-                    _endDate = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static ServiceIncidentsPayload FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ServiceIncidentsPayload>(data);
-        }
-    
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    
-    }
-    
     /// <summary>Credit amount type</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public enum CreditAmountType
@@ -25175,45 +25362,6 @@ namespace FortifiAPI
     
     }
     
-    /// <summary>Current State</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
-    public enum ChargebackState
-    {
-        [System.Runtime.Serialization.EnumMember(Value = "alert")]
-        Alert = 0,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "initiated")]
-        Initiated = 1,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "disputed")]
-        Disputed = 2,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "won")]
-        Won = 3,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "lost")]
-        Lost = 4,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "undisputed_loss")]
-        Undisputed_loss = 5,
-    
-    }
-    
-    /// <summary>Source of the alert, or gateway for everything else</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
-    public enum ChargebackSource
-    {
-        [System.Runtime.Serialization.EnumMember(Value = "gateway")]
-        Gateway = 0,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "ethoca")]
-        Ethoca = 1,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "verifi")]
-        Verifi = 2,
-    
-    }
-    
     /// <summary>Order Type (Must be initial to Auth Cards)</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
     public enum CreateOrderType
@@ -25325,30 +25473,6 @@ namespace FortifiAPI
     
         [System.Runtime.Serialization.EnumMember(Value = "verifi")]
         Verifi = 2,
-    
-    }
-    
-    /// <summary>Current State</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
-    public enum State2
-    {
-        [System.Runtime.Serialization.EnumMember(Value = "alert")]
-        Alert = 0,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "initiated")]
-        Initiated = 1,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "disputed")]
-        Disputed = 2,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "won")]
-        Won = 3,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "lost")]
-        Lost = 4,
-    
-        [System.Runtime.Serialization.EnumMember(Value = "undisputed_loss")]
-        Undisputed_loss = 5,
     
     }
     
@@ -28034,6 +28158,46 @@ namespace FortifiAPI
         public static Response67 FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Response67>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.10.46.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Response68 : Envelope, System.ComponentModel.INotifyPropertyChanged
+    {
+        private IntegrationUser _data;
+    
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public IntegrationUser Data
+        {
+            get { return _data; }
+            set 
+            {
+                if (_data != value)
+                {
+                    _data = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Response68 FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Response68>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
